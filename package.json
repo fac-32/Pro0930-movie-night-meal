@@ -1,0 +1,26 @@
+{
+  "name": "pro0930-movie-night-meal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fac-32/Pro0930-movie-night-meal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fac-32/Pro0930-movie-night-meal/issues"
+  },
+  "homepage": "https://github.com/fac-32/Pro0930-movie-night-meal#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
