@@ -1,11 +1,22 @@
 const changeColorBtn = document.getElementById("change-color-btn");
 const colorInput = document.getElementById("color-input");
+const root = document.documentElement;
 
-const applyBgColor = (color) => {
-  document.body.style.backgroundColor = color;
-};
+if (changeColorBtn && colorInput) {
+  const getBackgroundColor = () =>
+    getComputedStyle(root).getPropertyValue("--bg-color").trim();
 
-//add listener for the change color button
-changeColorBtn.addEventListener("click", () => {
-  document.body.style.backgroundColor = colorInput.value;
-});
+  const setBackgroundColor = (color) => {
+    root.style.setProperty("--bg-color", color);
+  };
+
+  const initialColor = getBackgroundColor();
+  if (initialColor) {
+    colorInput.value = initialColor;
+  }
+
+  const applyBackgroundColor = () => setBackgroundColor(colorInput.value);
+
+  changeColorBtn.addEventListener("click", applyBackgroundColor);
+  colorInput.addEventListener("input", applyBackgroundColor);
+}
