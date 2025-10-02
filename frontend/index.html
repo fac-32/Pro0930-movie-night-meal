@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Night Meal</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <h1>Movie Night Meal</h1>
 
     <h2>Movie filter</h2>
-    <form>
-        <input type="checkbox" id="isAdult" name="isAdult" value="Adult">
+    <div>
+        <input type="checkbox" id="isAdult" name="isAdult">
         <label for="isAdult"> Adult Movie</label><br>
 
         <label for="genre">Choose movie genre:</label>
@@ -35,13 +36,15 @@
             <option value="53" id="thriller">Thriller</option>
             <option value="10752" id="war">War</option>
             <option value="37" id="western">Western</option>
-        </select> <br>
+        </select>
+
+        <button id="filterSubmit" type="submit">Submit</button>
+    </div>
+
+    <div id="moviesContainer">
         
+    </div>
 
-        <br>
-        <input type="submit" value="Submit">
-    </form>
-
-
+    <script src="script.js"></script>
 </body>
 </html>
