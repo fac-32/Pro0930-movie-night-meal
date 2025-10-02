@@ -14,20 +14,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticPath = path.join(__dirname, "/frontend");
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(staticPath, 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(staticPath, "index.html"));
 });
 
 // filter movies
-app.get('/get-movies', async (req, res) => {
-
+app.get("/get-movies", async (req, res) => {
   try {
-
-    const genreID = req.query.genreID
-    const isAdult = req.query.isAdult
+    const genreID = req.query.genreID;
+    const isAdult = req.query.isAdult;
     const url = `https://api.themoviedb.org/3/discover/movie?include_adult=${isAdult}&language=en-US&page=1&with_genres=${genreID}&api_key=${TMDB_API_KEY}`;
-    console.log(url)
-    console.log("about to call API")
+    console.log(url);
+    console.log("about to call API");
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -36,8 +34,7 @@ app.get('/get-movies', async (req, res) => {
 
     const result = await response.json();
     console.log(result);
-    res.send(result)
-
+    res.send(result);
   } catch (error) {
     console.error(error.message);
   }

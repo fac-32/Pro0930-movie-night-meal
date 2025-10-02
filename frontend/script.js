@@ -2,19 +2,16 @@ const submitButton = document.getElementById("filterSubmit");
 const genreSelection = document.getElementById("genre");
 const adultSelection = document.getElementById("isAdult");
 
-
-submitButton.addEventListener("click",  async () => {
-
-    console.log("Submitting choices")
-    const currentGenreID = genreSelection.value
-    const isAdult = adultSelection.checked
-    fetchMovies(currentGenreID, isAdult);
+submitButton.addEventListener("click", async () => {
+  console.log("Submitting choices");
+  const currentGenreID = genreSelection.value;
+  const isAdult = adultSelection.checked;
+  fetchMovies(currentGenreID, isAdult);
 });
 
 async function fetchMovies(genreID, isAdult) {
-
-    // call API - get movies
-  const url = `/get-movies?genreID=${genreID}&isAdult=${isAdult}`
+  // call API - get movies
+  const url = `/get-movies?genreID=${genreID}&isAdult=${isAdult}`;
 
   try {
     const response = await fetch(url);
@@ -26,20 +23,18 @@ async function fetchMovies(genreID, isAdult) {
     console.log(result);
 
     // get first movie
-    const movies = result.results
-    populateMovies(movies)
-
+    const movies = result.results;
+    populateMovies(movies);
   } catch (error) {
     console.error(error.message);
   }
 }
 
 function populateMovies(movies) {
+  const moviesContainer = document.getElementById("moviesContainer");
+  moviesContainer.innerHTML = "";
 
-    const moviesContainer = document.getElementById("moviesContainer");
-    moviesContainer.innerHTML = '';
-
-    movies.forEach(movie => {
+  movies.forEach((movie) => {
     // For each plant, build a “card” with image + name
     const card = document.createElement("button");
     card.classList.add("movie-card");
@@ -60,6 +55,5 @@ function populateMovies(movies) {
 
     card.appendChild(info);
     moviesContainer.appendChild(card);
-
-    })
+  });
 }
