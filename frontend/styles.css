@@ -1,0 +1,11 @@
+:root {
+  --color-primary: #59923a; /*for buttons and headers*/
+  --bg-color: #505050; /*background color*/
+  --section-bg-color: #737373; /*bg color for section*/
+  --text-color-accent: #ffffff; /*text color for headers*/
+  --text-color: #ffffff; /*text color*/
+}
+
+body {
+    background-color: var(--bg-color);
+}
