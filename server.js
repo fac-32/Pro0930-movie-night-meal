@@ -16,6 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const staticPath = path.join(__dirname, "/frontend");
 
+app.use(express.static(staticPath));
 let dishInfo = {
   summary: "",
   ingrediants: "",
