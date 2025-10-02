@@ -1,17 +1,37 @@
 const submitButton = document.getElementById("filterSubmit");
 const genreSelection = document.getElementById("genre");
-const adultSelection = document.getElementById("isAdult");
+const startYearSelection = document.getElementById("startYear");
+const endYearSelection = document.getElementById("endYear");
+const errorMessage = document.getElementById("error-message");
+
+const modal = document.getElementById("myModal");
+const span = document.getElementById("modal-close");
+const modalTitle = document.getElementById("modalMovieTitle");
+const modalPoster = document.getElementById("modalMovieImg");
+const modalOverview = document.getElementById("movieOverview");
+
+var validFilterInput = true;
 
 submitButton.addEventListener("click", async () => {
+  if (!validFilterInput) {
+    return;
+  }
+
   console.log("Submitting choices");
   const currentGenreID = genreSelection.value;
-  const isAdult = adultSelection.checked;
-  fetchMovies(currentGenreID, isAdult);
+  const startYear = startYearSelection.value;
+  const endYear = endYearSelection.value;
+
+  fetchMovies(currentGenreID, startYear, endYear);
 });
 
-async function fetchMovies(genreID, isAdult) {
+async function fetchMovies(genreID, startYear, endYear) {
+  // get start and end year dates
+  const startDate = new Date(startYear, 0, 1).toISOString().slice(0, 10);
+  const endDate = new Date(endYear, 11, 31).toISOString().slice(0, 10);
+
   // call API - get movies
-  const url = `/get-movies?genreID=${genreID}&isAdult=${isAdult}`;
+  const url = `/get-movies?genreID=${genreID}&startDate=${startDate}&endDate=${endDate}`;
 
   try {
     const response = await fetch(url);
@@ -22,7 +42,6 @@ async function fetchMovies(genreID, isAdult) {
     const result = await response.json();
     console.log(result);
 
-    // get first movie
     const movies = result.results;
     populateMovies(movies);
   } catch (error) {
@@ -35,16 +54,22 @@ function populateMovies(movies) {
   moviesContainer.innerHTML = "";
 
   movies.forEach((movie) => {
-    // For each plant, build a “card” with image + name
     const card = document.createElement("button");
     card.classList.add("movie-card");
+
+    card.addEventListener("click", () => {
+      // populate movie modal
+      modal.style.display = "block";
+      modalTitle.textContent = movie.title;
+      modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
+      modalOverview.textContent = movie.overview;
+    });
 
     const img = document.createElement("img");
     img.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
     img.alt = movie.title;
     card.appendChild(img);
 
-    // Add the name / description
     const info = document.createElement("div");
     info.classList.add("movie-info");
 
@@ -57,3 +82,29 @@ function populateMovies(movies) {
     moviesContainer.appendChild(card);
   });
 }
+
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
+function validateReleaseYears() {
+  const startYear = parseInt(startYearSelection.value, 10);
+  const endYear = parseInt(endYearSelection.value, 10);
+
+  if (startYear > endYear) {
+    errorMessage.style.display = "inline";
+    validFilterInput = false;
+  } else {
+    errorMessage.style.display = "none";
+    validFilterInput = true;
+  }
+}
+
+startYearSelection.addEventListener("input", validateReleaseYears);
+endYearSelection.addEventListener("input", validateReleaseYears);

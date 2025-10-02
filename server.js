@@ -58,8 +58,10 @@ app.get("/", (req, res) => {
 app.get("/get-movies", async (req, res) => {
   try {
     const genreID = req.query.genreID;
-    const isAdult = req.query.isAdult;
-    const url = `https://api.themoviedb.org/3/discover/movie?include_adult=${isAdult}&language=en-US&page=1&with_genres=${genreID}&api_key=${TMDB_API_KEY}`;
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
+
+    const url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1&with_genres=${genreID}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&api_key=${TMDB_API_KEY}`;
     console.log(url);
     console.log("about to call API");
 
