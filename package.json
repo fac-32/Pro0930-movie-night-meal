@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "lint": "prettier -wс ."
+    "lint": "prettier -wc ."
   },
   "repository": {
     "type": "git",
