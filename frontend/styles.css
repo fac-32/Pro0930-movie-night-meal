@@ -1,0 +1,40 @@
+#moviesContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.movie-card {
+  background: #6b6b6b;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  width: 220px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-bottom: 20px;
+
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: left;
+}
+
+.movie-card:hover {
+  transform: scale(1.02);
+  background: #777777;
+}
+
+.movie-card img {
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid #444;
+}
+
+.movie-info {
+  height: 50px;
+}
