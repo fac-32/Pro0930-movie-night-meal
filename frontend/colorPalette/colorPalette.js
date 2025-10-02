@@ -8,5 +8,5 @@ const setBackgroundColor = (color) => {
 colorInput.value = getComputedStyle(root).getPropertyValue("--bg-color").trim();
 
 colorInput.addEventListener("input", () =>
-  setBackgroundColor(colorInput.value)
+  setBackgroundColor(colorInput.value),
 );
