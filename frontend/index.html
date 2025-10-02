@@ -7,28 +7,44 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-  <div id="myModal" class="modal">
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="modal-close">&times;</span>
+        <h2 id="modalMovieTitle"></h2>
+        <img id="modalMovieImg" />
+        <p id="movieOverview"></p>
 
-    <div class="modal-content">
-      <span class="close" id="modal-close">&times;</span>
-      <h2 id="modalMovieTitle"></h2>
-      <img id="modalMovieImg"></img>
-      <p id="movieOverview"></p>
-
-      <h3>Movie Meal Recipe</h3>
+        <h3>Movie Meal Recipe</h3>
+      </div>
     </div>
-
-  </div>
 
     <h1>Movie Night Meal</h1>
 
     <h2>Movie filter</h2>
     <div>
       <label for="startYear">From:</label>
-      <input name="startYear" id="startYear" type="number" min="1900" max="2025" step="1" value="2025" /><br>
+      <input
+        name="startYear"
+        id="startYear"
+        type="number"
+        min="1900"
+        max="2025"
+        step="1"
+        value="2025"
+      /><br />
       <label for="endYear">To:</label>
-      <input name="endYear" id="endYear" type="number" min="1900" max="2025" step="1" value="2025" /><br>
-      <span id="error-message">Start year must be less than or equal to end year.</span><br>
+      <input
+        name="endYear"
+        id="endYear"
+        type="number"
+        min="1900"
+        max="2025"
+        step="1"
+        value="2025"
+      /><br />
+      <span id="error-message"
+        >Start year must be less than or equal to end year.</span
+      ><br />
 
       <label for="genre">Choose movie genre:</label>
       <select name="genre" id="genre">

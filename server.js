@@ -21,7 +21,6 @@ app.get("/", (req, res) => {
 // filter movies
 app.get("/get-movies", async (req, res) => {
   try {
-
     const genreID = req.query.genreID;
     const startDate = req.query.startDate;
     const endDate = req.query.endDate;
