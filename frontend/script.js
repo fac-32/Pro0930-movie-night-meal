@@ -41,7 +41,7 @@ function populateMovies(movies) {
 
     movies.forEach(movie => {
     // For each plant, build a “card” with image + name
-    const card = document.createElement("div");
+    const card = document.createElement("button");
     card.classList.add("movie-card");
 
     const img = document.createElement("img");
