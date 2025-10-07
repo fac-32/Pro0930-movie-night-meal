@@ -6,8 +6,6 @@ window.addEventListener("load", function () {
   const errorMessage = document.getElementById("error-message");
   const choiceContainer = document.getElementById("choice-container");
 
-  const recipeButton = this.document.getElementById("recipePageBtn");
-
   const modal = document.getElementById("myModal");
   const span = document.getElementById("modal-close");
   const modalTitle = document.getElementById("modalMovieTitle");
@@ -125,9 +123,9 @@ window.addEventListener("load", function () {
     window.location.href = "filmLocation/filmLocation.html";
   });
 
-  recipePageBtn.addEventListener("click", () => {
+  modalSelectButton.addEventListener("click", () => {
 
-    this.window.location.href = "recipe/recipe.html";
+    window.location.href = "recipe/recipe.html";
 });
   
 });
