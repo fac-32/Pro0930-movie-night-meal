@@ -3,11 +3,12 @@ import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
+import OpenAI from "openai";
 
 dotenv.config();
 const port = process.env._PORT || 3000;
-const API_KEY = process.env.API_KEY;
 
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const RECIPE_API_KEY = process.env.RECIPE_API_KEY;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
@@ -17,6 +18,9 @@ const __dirname = dirname(__filename);
 const staticPath = path.join(__dirname, "/frontend");
 
 app.use(express.static(staticPath));
+app.use(express.json());
+
+// Recipe
 let dishInfo = {
   summary: "",
   ingrediants: "",
@@ -78,7 +82,28 @@ app.get("/get-movies", async (req, res) => {
   }
 });
 
-app.use(express.static(staticPath));
+// finding filmed location
+
+app.post("/get-location", async (req, res) => {
+  const openai = new OpenAI({
+    apiKey: OPENAI_API_KEY,
+  });
+  const { model, input } = req.body;
+  try {
+    const response = await openai.responses.create({
+      model: model,
+      input: [
+        {
+          role: "user",
+          content: input,
+        },
+      ],
+    });
+    res.json({ result: response.output_text });
+  } catch (e) {
+    res.status(500).json({ error: e.message || "Internal Server Error" });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
