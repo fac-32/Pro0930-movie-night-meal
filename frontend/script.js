@@ -11,6 +11,7 @@ window.addEventListener("load", function () {
   const modalTitle = document.getElementById("modalMovieTitle");
   const modalPoster = document.getElementById("modalMovieImg");
   const modalOverview = document.getElementById("movieOverview");
+  const modalSelectButton = document.getElementById("movieSelectButton");
 
   var validFilterInput = true;
 
