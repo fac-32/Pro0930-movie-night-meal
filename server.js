@@ -32,7 +32,9 @@ let dishInfo = {
 function fillDishInfoData(data) {
   const cleanHTML = (text) => (text ? text.replace(/<\/?[^>]+(>|$)/g, "") : "");
   dishInfo.summary = cleanHTML(data.summary || "");
-  dishInfo.instructions = cleanHTML(data.instructions || "Instructions unavailable.");
+  dishInfo.instructions = cleanHTML(
+    data.instructions || "Instructions unavailable.",
+  );
   dishInfo.healthScore = data.healthScore || "N/A";
 
   if (data.extendedIngredients && Array.isArray(data.extendedIngredients)) {
@@ -48,9 +50,9 @@ function fillDishInfoData(data) {
 
 async function initializeRecipe() {
   const dish = "Lembas+bread"; // changed to a safer example dish
-  
+
   const recipeSearch = await fetch(
-    `https://api.spoonacular.com/recipes/complexSearch?query=${dish}&number=1&language=en&apiKey=${RECIPE_API_KEY}`
+    `https://api.spoonacular.com/recipes/complexSearch?query=${dish}&number=1&language=en&apiKey=${RECIPE_API_KEY}`,
   );
   const SearchData = await recipeSearch.json();
 
@@ -61,7 +63,7 @@ async function initializeRecipe() {
   const id = SearchData.results[0].id;
 
   const recipeAPI = await fetch(
-    `https://api.spoonacular.com/recipes/${id}/information?apiKey=${RECIPE_API_KEY}`
+    `https://api.spoonacular.com/recipes/${id}/information?apiKey=${RECIPE_API_KEY}`,
   );
   const recipeData = await recipeAPI.json();
 

@@ -144,8 +144,6 @@ window.addEventListener("load", function () {
   });
 
   modalSelectButton.addEventListener("click", () => {
-
     window.location.href = "recipe/recipe.html";
-});
-  
+  });
 });
