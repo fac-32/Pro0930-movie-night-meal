@@ -1,4 +1,3 @@
-
 window.addEventListener("load", function () {
   const submitButton = document.getElementById("filterSubmit");
   const genreSelection = document.getElementById("genre");
@@ -59,22 +58,21 @@ window.addEventListener("load", function () {
   function populateMovies(movies) {
     const moviesContainer = document.getElementById("moviesContainer");
     moviesContainer.innerHTML = "";
-    modalRatingContainer.innerHTML = ""
+    modalRatingContainer.innerHTML = "";
 
     movies.forEach((movie) => {
       const card = document.createElement("button");
       card.classList.add("movie-card");
 
       card.addEventListener("click", () => {
-
-        modalRatingContainer.innerHTML = ""
+        modalRatingContainer.innerHTML = "";
         // populate movie modal
         modal.style.display = "block";
         modalTitle.textContent = `${movie.title} (${new Date(movie.release_date).getFullYear()})`;
         modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
         modalOverview.textContent = movie.overview;
-        modalReleaseDate.textContent = `Release Date: ${new Date(movie.release_date).toLocaleDateString()}`
-        populateRatingStars(modalRatingContainer, movie.vote_average)
+        modalReleaseDate.textContent = `Release Date: ${new Date(movie.release_date).toLocaleDateString()}`;
+        populateRatingStars(modalRatingContainer, movie.vote_average);
 
         localStorage.setItem("filmTitle", movie.title);
       });
@@ -98,12 +96,11 @@ window.addEventListener("load", function () {
   }
 
   function populateRatingStars(ratingContainer, ratingValue) {
-
-    const numberOfStars = Math.ceil(ratingValue/2)
+    const numberOfStars = Math.ceil(ratingValue / 2);
 
     for (let index = 0; index < numberOfStars; index++) {
       const star = document.createElement("img");
-      star.src = './images/Star.png';
+      star.src = "./images/Star.png";
       star.width = 30;
       star.height = 30;
       ratingContainer.appendChild(star);
