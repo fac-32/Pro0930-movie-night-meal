@@ -7,6 +7,7 @@ import OpenAI from "openai";
 
 dotenv.config();
 const port = process.env._PORT || 3000;
+const API_KEY = process.env.API_KEY;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const RECIPE_API_KEY = process.env.RECIPE_API_KEY;
@@ -36,7 +37,7 @@ function fillDishInfoData(data) {
 
 async function initializeRecipe() {
   const dish = "Lembas+bread"; // from the lord of the rings
-
+  
   const recipeSearch = await fetch(
     `https://api.spoonacular.com/recipes/complexSearch?query=${dish}&number=1&apiKey=${RECIPE_API_KEY}`,
   );
