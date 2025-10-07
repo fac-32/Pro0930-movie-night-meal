@@ -142,4 +142,8 @@ window.addEventListener("load", function () {
   gameBtn.addEventListener("click", () => {
     window.location.href = "filmLocation/filmLocation.html";
   });
+
+  modalSelectButton.addEventListener("click", () => {
+    window.location.href = "recipe/recipe.html";
+  });
 });
