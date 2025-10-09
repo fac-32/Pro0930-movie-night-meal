@@ -5,6 +5,10 @@ import { dirname } from "path";
 import path from "path";
 import OpenAI from "openai";
 
+import { connectDB } from './config/db.js';
+import Whishlist from './models/wishlist.model.js'
+
+
 dotenv.config();
 const port = process.env._PORT || 3000;
 const API_KEY = process.env.API_KEY;
@@ -109,6 +113,28 @@ app.get("/recipe", async (req, res) => {
   }
 });
 
+// MongooDB
+
+app.post("/api/whishlist", async(req, res) => {
+  const movie = req.body;
+  if(!movie.movieName)
+    {
+      return res.status(400).json({success: false, message: "no movie name found"});
+    }
+
+    const newMovie = new Whishlist(movie);
+
+    try
+    {
+      await newMovie.save();
+      res.status(201).json({success: true, data: newMovie});
+    }catch(error)
+    {
+      console.log("Error in adding movie: ", error.message);
+      res.status(500).jsonp({success: false, message: "server error"});
+    }
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(staticPath, "index.html"));
   initializeRecipe();
@@ -162,5 +188,6 @@ app.post("/get-location", async (req, res) => {
 });
 
 app.listen(port, () => {
+  connectDB();
   console.log(`Server is running at http://localhost:${port}`);
 });
