@@ -32,6 +32,7 @@ body {
   background-color: var(--bg-color);
   display: flex;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   text-align: center;
   margin-top: 70px;
@@ -41,8 +42,22 @@ h1, h2, h3 {
   font-family: 'MainFont-Bold', sans-serif;
 }
 
-p {
+p, span {
   font-family: 'MainFont-Reg', sans-serif;
+}
+
+button {
+  background-color: white;
+  font-family: 'MainFont-Reg', sans-serif;
+  border-radius: 3px;
+  padding: 3px;
+  cursor: pointer;
+  margin: 2px;
+  border: 0px;
+}
+
+button:hover {
+  background-color: #f5f3f3;
 }
 
 .headerBanner {
@@ -61,6 +76,7 @@ p {
   gap: 10px;
   padding-left: 5px;
   padding-right: 5px;
+  border-bottom: #ffffff 2px solid;
 }
 
 .headerBanner h1 {
@@ -158,21 +174,70 @@ p {
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: white;
   text-decoration: none;
   cursor: pointer;
 }
 
-.choice-card {
+.choice-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
   background-color: #e0dfdf;
-  width: 60vw;
+  border-radius: 4px;
+}
+
+.choice-card {
+  padding: 6px;
+  width: 40vw;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.choice-card h3 {
+  height: 40%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-bottom: #fffdfd 2px solid;
+}
+
+.choice-card-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 60%;
 }
 
 .releaseDate-option {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   gap: 10px;
+}
+
+input {
+  background-color: white;
+  border: #e0dfdf 2px solid;
+  border-radius: 4px;
+  font-family: 'MainFont-Reg', sans-serif ;
+  height: 30px;
+}
+
+select {
+  background-color: white;
+  font-family: 'MainFont-Reg', sans-serif ;
+  height: 30px;
+  border-radius: 4px;
+  border: #e0dfdf 2px solid;
 }
 
 #error-message {
