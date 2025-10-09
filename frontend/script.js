@@ -16,7 +16,17 @@ window.addEventListener("load", function () {
 
   const modalSelectButton = document.getElementById("movieSelectButton");
 
+  // ratings buttons
+  const ratingStar1Button = document.getElementById("starRating_1");
+  const ratingStar2Button = document.getElementById("starRating_2");
+  const ratingStar3Button = document.getElementById("starRating_3");
+  const ratingStar4Button = document.getElementById("starRating_4");
+  const ratingStar5Button = document.getElementById("starRating_5");
+
+  const ratingStars = [ratingStar1Button, ratingStar2Button, ratingStar3Button, ratingStar4Button, ratingStar5Button];
+
   var validFilterInput = true;
+  var currentRating = 0;
 
   submitButton.addEventListener("click", async () => {
     if (!validFilterInput) {
@@ -28,16 +38,16 @@ window.addEventListener("load", function () {
     const startYear = startYearSelection.value;
     const endYear = endYearSelection.value;
 
-    fetchMovies(currentGenreID, startYear, endYear);
+    fetchMovies(currentGenreID, startYear, endYear, currentRating);
   });
 
-  async function fetchMovies(genreID, startYear, endYear) {
+  async function fetchMovies(genreID, startYear, endYear, rating) {
     // get start and end year dates
     const startDate = new Date(startYear, 0, 1).toISOString().slice(0, 10);
     const endDate = new Date(endYear, 11, 31).toISOString().slice(0, 10);
 
     // call API - get movies
-    const url = `/get-movies?genreID=${genreID}&startDate=${startDate}&endDate=${endDate}`;
+    const url = `/get-movies?genreID=${genreID}&startDate=${startDate}&endDate=${endDate}&rating=${rating}`;
 
     try {
       const response = await fetch(url);
@@ -153,6 +163,23 @@ window.addEventListener("load", function () {
   gameBtn.type = "button";
   gameBtn.textContent = "Play Game?";
   choiceContainer.appendChild(gameBtn);
+
+  // ratings
+  ratingStars.forEach((starButton, index) => {
+    starButton.addEventListener("click", () => {
+      console.log(index + 1)
+
+      for (let i = 0; i < ratingStars.length; i++) {
+
+        const shouldFade = i > index;
+        ratingStars[i].style.opacity = shouldFade ? '0.3': '1';
+      }
+
+      currentRating = index + 1;
+    });
+
+    starButton.style.opacity = '0.3'
+  });
 
   gameBtn.addEventListener("click", () => {
     window.location.href = "filmLocation/filmLocation.html";
