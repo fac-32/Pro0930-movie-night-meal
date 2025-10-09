@@ -143,16 +143,6 @@ window.addEventListener("load", function () {
   startYearSelection.addEventListener("input", validateReleaseYears);
   endYearSelection.addEventListener("input", validateReleaseYears);
 
-  const gameBtn = document.createElement("button");
-  gameBtn.classList.add("gameBtn");
-  gameBtn.type = "button";
-  gameBtn.textContent = "Play Game?";
-  choiceContainer.appendChild(gameBtn);
-
-  gameBtn.addEventListener("click", () => {
-    window.location.href = "filmLocation/filmLocation.html";
-  });
-
   modalSelectButton.addEventListener("click", () => {
     window.location.href = "recipe/recipe.html";
   });
