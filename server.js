@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import OpenAI from "openai";
+import { paletteRouter } from "./backend/routes/colorPaletteRoute.js";
 
 dotenv.config();
 const port = process.env._PORT || 3000;
@@ -19,6 +20,9 @@ const staticPath = path.join(__dirname, "/frontend");
 
 app.use(express.static(staticPath));
 app.use(express.json());
+
+// route for color palette
+app.use("/api/palette", paletteRouter);
 
 // Recipe
 let dishInfo = {

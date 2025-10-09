@@ -1,3 +1,5 @@
+import { applyMoviePalette } from "./colorPalette/colorPalette.js";
+
 window.addEventListener("load", function () {
   const submitButton = document.getElementById("filterSubmit");
   const genreSelection = document.getElementById("genre");
@@ -66,6 +68,7 @@ window.addEventListener("load", function () {
         modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
         modalOverview.textContent = movie.overview;
         localStorage.setItem("filmTitle", movie.title);
+        applyMoviePalette();
       });
 
       const img = document.createElement("img");
