@@ -70,6 +70,10 @@ window.addEventListener("load", function () {
         modal.style.display = "block";
         modalTitle.textContent = `${movie.title} (${new Date(movie.release_date).getFullYear()})`;
         modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
+        modalPoster.onerror = function() {
+        this.onerror = null;
+        this.src = './images/movie_poster_placeholder.png'; 
+        };
         modalOverview.textContent = movie.overview;
         modalReleaseDate.textContent = `Release Date: ${new Date(movie.release_date).toLocaleDateString()}`;
         populateRatingStars(modalRatingContainer, movie.vote_average);
@@ -80,6 +84,10 @@ window.addEventListener("load", function () {
       const img = document.createElement("img");
       img.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
       img.alt = movie.title;
+      img.onerror = function() {
+      this.onerror = null;
+      this.src = './images/movie_poster_placeholder.png'; 
+      };
       card.appendChild(img);
 
       const info = document.createElement("div");
