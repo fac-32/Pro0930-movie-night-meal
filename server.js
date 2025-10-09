@@ -169,19 +169,19 @@ app.post("/get-location", async (req, res) => {
 // Rendering image for the city
 
 app.post("/get-image", async (req, res) => {
-  const {params} = req.body;
+  const { params } = req.body;
   const url = `https://api.unsplash.com/search/photos?${params}`;
   const result = await fetch(url, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Authorization': `Client-ID ${UNSPLASH_API_KEY}`,
+      Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
     },
   });
-  console.log('This is working');
+  console.log("This is working");
   const output = await result.json();
   console.log(output);
   res.send(output);
-})
+});
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

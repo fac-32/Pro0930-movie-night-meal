@@ -6,7 +6,7 @@ window.addEventListener("load", async function () {
 
   console.log(gameButton);
   gameButton.addEventListener("click", async () => {
-    img.src = "../images/loading-7528_256.gif"
+    img.src = "../images/loading-7528_256.gif";
     const response = await fetch("/get-location", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -19,22 +19,23 @@ window.addEventListener("load", async function () {
       throw new Error(`Server error ${response.status}`);
     }
     const data = await response.json();
-    const locationStr = data.result;          // "tokyo, Japan"
-    const [city, country] = locationStr.split(',').map(s => s.trim());
+    const locationStr = data.result; // "tokyo, Japan"
+    const [city, country] = locationStr.split(",").map((s) => s.trim());
     console.log(data);
-  
-    const params = new URLSearchParams ({
-      query: city, country,
+
+    const params = new URLSearchParams({
+      query: city,
+      country,
       per_page: 1,
-      order_by: 'relevant'
+      order_by: "relevant",
     });
 
     const result = await fetch("/get-image", {
-        method: 'POST',
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ params: params.toString() })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ params: params.toString() }),
     });
-    console.log('This is working');
+    console.log("This is working");
     const output = await result.json();
 
     console.log(output);
@@ -42,7 +43,7 @@ window.addEventListener("load", async function () {
     if (output.results && output.results.length > 0) {
       img.src = output.results[0].urls.small;
     } else {
-      img.src = ''; // Or set a default/fallback image
+      img.src = ""; // Or set a default/fallback image
     }
   });
 });

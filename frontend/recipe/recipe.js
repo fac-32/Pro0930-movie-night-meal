@@ -3,7 +3,7 @@ const instructionsEL = document.getElementById("instructions");
 const summaryEL = document.getElementById("summary");
 const healthScoreEL = document.getElementById("healthScore");
 const movieTitleEL = document.getElementById("movieTitle");
-const gameContainer = document.getElementById("gameSection")
+const gameContainer = document.getElementById("gameSection");
 
 const movieTitle = localStorage.getItem("filmTitle");
 
@@ -27,5 +27,4 @@ window.addEventListener("DOMContentLoaded", async () => {
   gameBtn.addEventListener("click", () => {
     window.location.href = "../filmLocation/filmLocation.html";
   });
-
 });
