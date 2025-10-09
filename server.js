@@ -8,7 +8,7 @@ import { paletteRouter } from "./backend/routes/colorPaletteRoute.js";
 
 dotenv.config();
 const port = process.env._PORT || 3000;
-const API_KEY = process.env.API_KEY;
+// const API_KEY = process.env.API_KEY;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const RECIPE_API_KEY = process.env.RECIPE_API_KEY;

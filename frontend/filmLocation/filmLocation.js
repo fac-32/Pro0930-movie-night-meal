@@ -6,7 +6,7 @@ window.addEventListener("load", async function () {
 
   console.log(gameButton);
   gameButton.addEventListener("click", async () => {
-    img.src = "Images/loading-7528_256.gif"
+    img.src = "../images/loading-7528_256.gif"
     const response = await fetch("/get-location", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
