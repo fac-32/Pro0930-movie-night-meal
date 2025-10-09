@@ -17,7 +17,7 @@ paletteRouter.post("/", async (req, res) => {
     const { palette } = await getColorsForMovie(
       title,
       randomPixels,
-      process.env.OPENAI_API_KEY
+      process.env.OPENAI_API_KEY,
     );
     return res.json({ ok: true, palette });
   } catch (err) {
