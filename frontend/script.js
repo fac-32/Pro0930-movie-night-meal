@@ -1,4 +1,7 @@
+import { getStarCount } from "./ratingsUtils.js";
+
 window.addEventListener("load", function () {
+
   const submitButton = document.getElementById("filterSubmit");
   const genreSelection = document.getElementById("genre");
   const startYearSelection = document.getElementById("startYear");
@@ -121,7 +124,7 @@ window.addEventListener("load", function () {
   }
 
   function populateRatingStars(ratingContainer, ratingValue) {
-    const numberOfStars = Math.ceil(ratingValue / 2);
+    const numberOfStars = getStarCount(ratingValue);
 
     for (let index = 0; index < numberOfStars; index++) {
       const star = document.createElement("img");
