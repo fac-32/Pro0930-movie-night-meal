@@ -1,3 +1,5 @@
+import { applyMoviePalette } from "./colorPalette/colorPalette.js";
+
 window.addEventListener("load", function () {
   const submitButton = document.getElementById("filterSubmit");
   const genreSelection = document.getElementById("genre");
@@ -75,6 +77,7 @@ window.addEventListener("load", function () {
         populateRatingStars(modalRatingContainer, movie.vote_average);
 
         localStorage.setItem("filmTitle", movie.title);
+        applyMoviePalette();
       });
 
       const img = document.createElement("img");
