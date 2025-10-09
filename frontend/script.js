@@ -77,7 +77,7 @@ window.addEventListener("load", function () {
         populateRatingStars(modalRatingContainer, movie.vote_average);
 
         localStorage.setItem("filmTitle", movie.title);
-        applyMoviePalette();
+        applyMoviePalette(modalPoster.src);
       });
 
       const img = document.createElement("img");

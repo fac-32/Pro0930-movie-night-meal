@@ -19,10 +19,27 @@ const setMovieColors = (palette) => {
 
 const isValidHex = (color) => /^#([0-9A-Fa-f]{6})$/.test(color);
 
-async function fetchPaletteFromLocalStorage({
-  apiBase = "http://localhost:3000",
-  storageKey = "filmTitle",
-} = {}) {
+// can be replaces with .modalPoster selector
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    if (!src || typeof src !== "string") {
+      reject(new Error("loadImage requires a non-empty string URL."));
+      return;
+    }
+
+    const image = new Image(); // <img src=src>
+    image.crossOrigin = "anonymous";
+    image.onload = () => resolve(image);
+    image.onerror = () =>
+      reject(new Error(`Failed to load image from URL: ${src}`));
+    image.src = src;
+  });
+}
+
+async function fetchPaletteFromLocalStorage({ randomPixels }) {
+  const apiBase = "http://localhost:3000";
+  const storageKey = "filmTitle";
+
   const title = localStorage.getItem(storageKey);
   if (!title || typeof title !== "string" || !title.trim()) {
     throw new Error(
@@ -33,7 +50,10 @@ async function fetchPaletteFromLocalStorage({
   const res = await fetch(`${apiBase}/api/palette`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title: title.trim() }),
+    body: JSON.stringify({
+      title: title.trim(),
+      palette: JSON.stringify(randomPixels),
+    }),
   });
 
   const payload = await res.json().catch(() => ({}));
@@ -57,14 +77,64 @@ async function fetchPaletteFromLocalStorage({
   return palette;
 }
 
-export async function applyMoviePalette(options) {
+async function getPixelsFromImageUrl(imageUrl) {
+  const image = await loadImage(imageUrl);
+
+  const width = Math.max(1, image.naturalWidth || image.width);
+  const height = Math.max(1, image.naturalHeight || image.height);
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  if (!context) {
+    throw new Error("Unable to acquire 2D canvas context.");
+  }
+
+  context.drawImage(image, 0, 0, width, height);
+
+  const totalPixels = width * height;
+  if (!Number.isFinite(totalPixels) || totalPixels <= 0) {
+    throw new Error("Image has invalid dimensions.");
+  }
+
+  const uniqueSampleIndexes = new Set();
+  const randomPixels = [];
+
+  while (uniqueSampleIndexes.size < Math.min(100, totalPixels)) {
+    const randomIndex = Math.floor(Math.random() * totalPixels);
+    if (uniqueSampleIndexes.has(randomIndex)) {
+      continue;
+    }
+    uniqueSampleIndexes.add(randomIndex);
+
+    const x = randomIndex % width;
+    const y = Math.floor(randomIndex / width);
+    const { data } = context.getImageData(x, y, 1, 1);
+
+    randomPixels.push({
+      x,
+      y,
+      r: data[0],
+      g: data[1],
+      b: data[2],
+      a: data[3],
+    });
+  }
+
+  return randomPixels;
+}
+
+export async function applyMoviePalette(imageUrl) {
   try {
-    const palette = await fetchPaletteFromLocalStorage(options);
+    const randomPixels = await getPixelsFromImageUrl(imageUrl);
+    console.log(palette);
 
+    const palette = await fetchPaletteFromLocalStorage(randomPixels);
     setMovieColors(palette);
-
-    console.info("Applied movie palette:", palette);
   } catch (error) {
-    console.error(error);
+    console.error("applyMoviePalette failed:", error);
+    return [];
   }
 }

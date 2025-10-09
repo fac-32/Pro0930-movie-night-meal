@@ -14,7 +14,7 @@ const ColorPaletteSchema = z.object({
   "--text-color": HexColor,
 });
 
-export async function getColorsForMovie(movieTitle, apiKey) {
+export async function getColorsForMovie(movieTitle, randomPixels, apiKey) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
 
   const client = new OpenAI({ apiKey });
@@ -26,6 +26,10 @@ export async function getColorsForMovie(movieTitle, apiKey) {
         role: "system",
         content:
           "You are a film-savvy color designer creating UI palettes. Respond with JSON only—no explanations, markdown, or prose. Each palette must include exactly five six-digit hex colors under the keys: --color-primary, --bg-color, --section-bg-color, --text-color-accent, --text-color.",
+      },
+      {
+        role: "user",
+        content: `Here are some pixles with colors from cinema poster: ${randomPixels}`,
       },
       {
         role: "user",
