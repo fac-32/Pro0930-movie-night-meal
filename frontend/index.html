@@ -37,32 +37,25 @@
     />
 
     <div id="choice-container">
-      <label for="startYear">From:</label>
-      <input
-        name="startYear"
-        id="startYear"
-        type="number"
-        min="1900"
-        max="2025"
-        step="1"
-        value="2025"
-      /><br />
-      <label for="endYear">To:</label>
-      <input
-        name="endYear"
-        id="endYear"
-        type="number"
-        min="1900"
-        max="2025"
-        step="1"
-        value="2025"
-      /><br />
-      <span id="error-message"
-        >Start year must be less than or equal to end year.</span
-      ><br />
 
-      <label for="genre">Choose movie genre:</label>
-      <select name="genre" id="genre">
+      <div class="choice-card">
+        <h3>Release Date</h3>
+        <div class="releaseDate-option">
+          <p>from</p>
+          <input name="startYear" id="startYear" type="number"
+          min="1900" max="2025" step="1" value="2025"/>
+        </div>
+        <div class="releaseDate-option">
+          <p>to</p>
+          <input name="endYear" id="endYear" type="number"
+          min="1900" max="2025" step="1" value="2025"/>
+        </div>
+        <span id="error-message">Start year must be less than or equal to end year.</span>
+      </div>
+
+      <div class="choice-card">
+        <h3>Genre</h3>
+        <select name="genre" id="genre">
         <option value="28" id="action">Action</option>
         <option value="12" id="adventure">Adventure</option>
         <option value="16" id="animation">Animation</option>
@@ -84,6 +77,7 @@
         <option value="10752" id="war">War</option>
         <option value="37" id="western">Western</option>
       </select>
+      </div>      
 
       <button id="filterSubmit" type="submit">Submit</button>
     </div>

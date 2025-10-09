@@ -163,6 +163,18 @@ p {
   cursor: pointer;
 }
 
+.choice-card {
+  background-color: #e0dfdf;
+  width: 60vw;
+}
+
+.releaseDate-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
 #error-message {
   color: red;
   display: none;
