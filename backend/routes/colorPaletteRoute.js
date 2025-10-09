@@ -25,6 +25,5 @@ paletteRouter.post("/", async (req, res) => {
   }
 });
 
-
 // /api/palette/hello
 //paletteRouter.post("/hello", async (req, res) => {})

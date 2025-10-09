@@ -26,7 +26,7 @@ async function fetchPaletteFromLocalStorage({
   const title = localStorage.getItem(storageKey);
   if (!title || typeof title !== "string" || !title.trim()) {
     throw new Error(
-      `No movie title found in localStorage under key "${storageKey}".`
+      `No movie title found in localStorage under key "${storageKey}".`,
     );
   }
 
