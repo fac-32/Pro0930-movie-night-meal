@@ -12,11 +12,12 @@ import Whishlist from './models/wishlist.model.js'
 
 dotenv.config();
 const port = process.env._PORT || 3000;
-const API_KEY = process.env.API_KEY;
+// const API_KEY = process.env.API_KEY;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const RECIPE_API_KEY = process.env.RECIPE_API_KEY;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -189,6 +190,23 @@ app.post("/get-location", async (req, res) => {
   } catch (e) {
     res.status(500).json({ error: e.message || "Internal Server Error" });
   }
+});
+
+// Rendering image for the city
+
+app.post("/get-image", async (req, res) => {
+  const { params } = req.body;
+  const url = `https://api.unsplash.com/search/photos?${params}`;
+  const result = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
+    },
+  });
+  console.log("This is working");
+  const output = await result.json();
+  console.log(output);
+  res.send(output);
 });
 
 app.listen(port, () => {
