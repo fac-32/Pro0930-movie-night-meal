@@ -6,13 +6,17 @@ import path from "path";
 import OpenAI from "openai";
 import { paletteRouter } from "./backend/routes/colorPaletteRoute.js";
 
+import { connectDB } from "./config/db.js";
+import Whishlist from "./models/wishlist.model.js";
+
 dotenv.config();
 const port = process.env._PORT || 3000;
-const API_KEY = process.env.API_KEY;
+// const API_KEY = process.env.API_KEY;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const RECIPE_API_KEY = process.env.RECIPE_API_KEY;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -113,6 +117,27 @@ app.get("/recipe", async (req, res) => {
   }
 });
 
+// MongooDB
+
+app.post("/api/whishlist", async (req, res) => {
+  const movie = req.body;
+  if (!movie.movieName) {
+    return res
+      .status(400)
+      .json({ success: false, message: "no movie name found" });
+  }
+
+  const newMovie = new Whishlist(movie);
+
+  try {
+    await newMovie.save();
+    res.status(201).json({ success: true, data: newMovie });
+  } catch (error) {
+    console.log("Error in adding movie: ", error.message);
+    res.status(500).jsonp({ success: false, message: "server error" });
+  }
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(staticPath, "index.html"));
   initializeRecipe();
@@ -165,6 +190,24 @@ app.post("/get-location", async (req, res) => {
   }
 });
 
+// Rendering image for the city
+
+app.post("/get-image", async (req, res) => {
+  const { params } = req.body;
+  const url = `https://api.unsplash.com/search/photos?${params}`;
+  const result = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
+    },
+  });
+  console.log("This is working");
+  const output = await result.json();
+  console.log(output);
+  res.send(output);
+});
+
 app.listen(port, () => {
+  connectDB();
   console.log(`Server is running at http://localhost:${port}`);
 });
