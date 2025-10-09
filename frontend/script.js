@@ -87,8 +87,15 @@ window.addEventListener("load", function () {
 
       const nameEl = document.createElement("h3");
       nameEl.textContent = movie.title;
+      const dateEl = document.createElement("p");
+      const options = { year: "numeric", month: "long", day: "2-digit" };
+      dateEl.textContent = new Date(movie.release_date).toLocaleDateString(
+        "en-US",
+        options,
+      );
 
       info.appendChild(nameEl);
+      info.appendChild(dateEl);
 
       card.appendChild(info);
       moviesContainer.appendChild(card);
