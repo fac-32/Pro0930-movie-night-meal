@@ -4,11 +4,69 @@
   --section-bg-color: #737373; /*bg color for section*/
   --text-color-accent: #ffffff; /*text color for headers*/
   --text-color: #ffffff; /*text color*/
+  --banner-text-color: #ffffff;
+  --banner-bg-color: #05071d;
+}
+
+@font-face {
+  font-family: 'BannerFont';
+  src: url('./fonts/Sarina-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'MainFont-Bold';
+  src: url('./fonts/FunnelSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'MainFont-Reg';
+  src: url('./fonts/FunnelSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'MainFont-Light';
+  src: url('./fonts/FunnelSans-Light.ttf') format('truetype');
 }
 
 body {
   background-color: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 70px;
 }
+
+h1, h2, h3 {
+  font-family: 'MainFont-Bold', sans-serif;
+}
+
+p {
+  font-family: 'MainFont-Reg', sans-serif;
+}
+
+.headerBanner {
+  width: 100%;
+  height: 70px;
+  background-color: var(--banner-bg-color);
+  color: var(--banner-text-color);
+  text-align: left;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.headerBanner h1 {
+  font-family: 'BannerFont', sans-serif;
+}
+
 #moviesContainer {
   display: flex;
   flex-wrap: wrap;
@@ -18,15 +76,13 @@ body {
 }
 
 .movie-card {
-  background: #6b6b6b;
+  background: #bdbdbd;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  color: white;
+  color: black;
   width: 220px;
-  padding-right: 10px;
-  padding-left: 10px;
-  padding-bottom: 20px;
+  padding: 0;
 
   margin-bottom: 5px;
   margin-top: 5px;
@@ -37,17 +93,22 @@ body {
 
 .movie-card:hover {
   transform: scale(1.02);
-  background: #777777;
+  background: #e0dfdf;
 }
 
 .movie-card img {
   width: 100%;
   display: block;
-  border-bottom: 1px solid #444;
+  border-bottom: 2px solid #444;
+  border-top-left-radius:  8px;
+  border-top-right-radius: 8px;
 }
 
 .movie-info {
-  height: 50px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
 }
 
 .modal {
@@ -59,16 +120,17 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal-content {
   max-height: 80vh;
   overflow-y: auto;
-  background-color: #f1f1f1;
+  background-color: var(--banner-bg-color);
+  color: var(--banner-text-color);
+  border: #ffffff 2px solid;
   margin: 15% auto;
   padding: 20px;
-  border: 1px solid #888;
   border-radius: 4px;
   width: 80%;
   display: flex;
@@ -79,6 +141,7 @@ body {
   width: 80%;
   display: flex;
   flex-direction: column;
+  text-align: left;
 }
 
 .modalPoster {
