@@ -7,7 +7,7 @@ export const paletteRouter = Router();
 // POST /api/palette  { "title": "Inception" }
 paletteRouter.post("/", async (req, res) => {
   try {
-    const { title } = req.body || {};
+    const { title, randomPixels } = req.body || {};
     if (!title || typeof title !== "string") {
       return res
         .status(400)
@@ -16,7 +16,8 @@ paletteRouter.post("/", async (req, res) => {
 
     const { palette } = await getColorsForMovie(
       title,
-      process.env.OPENAI_API_KEY,
+      randomPixels,
+      process.env.OPENAI_API_KEY
     );
     return res.json({ ok: true, palette });
   } catch (err) {
