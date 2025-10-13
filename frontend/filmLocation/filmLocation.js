@@ -1,10 +1,15 @@
 window.addEventListener("load", async function () {
   const film = localStorage.getItem("filmTitle");
-  const userGuess = document.getElementById("location");
   const gameButton = document.querySelector(".gameBtn");
   const img = document.getElementById("city-img");
+  const userGuess = document.getElementById("userGuess");
+  const scoreBoard = document.getElementById("scoreBoard");
+  const keyboard = document.getElementById("virtualKeyboard");
 
-  console.log(gameButton);
+  const word = "tokyo";
+
+  // Getting the location 
+
   gameButton.addEventListener("click", async () => {
     img.src = "../images/loading-7528_256.gif";
     const response = await fetch("/get-location", {
@@ -21,11 +26,11 @@ window.addEventListener("load", async function () {
     const data = await response.json();
     const locationStr = data.result; // "tokyo, Japan"
     const [city, country] = locationStr.split(",").map((s) => s.trim());
-    console.log(data);
+    word = country;
 
+    // Getting the Image
     const params = new URLSearchParams({
-      query: city,
-      country,
+      query: country,
       per_page: 1,
       order_by: "relevant",
     });
@@ -45,5 +50,43 @@ window.addEventListener("load", async function () {
     } else {
       img.src = ""; // Or set a default/fallback image
     }
+  });
+
+  //create input field
+  for (let char of word) {
+    let charInputDiv = document.createElement("div");
+    charInputDiv.classList.add("userGuessLetter");
+    userGuess.appendChild(charInputDiv);
+  }
+
+  let childNodes = userGuess.childNodes;
+  let maxGuess = 6;
+
+  // Creating Virtual Keyboard
+  const keys = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m"];
+  for (let key of keys) {
+    const keyBtn = document.createElement("button");
+    keyBtn.classList.add("keys");
+    keyBtn.setAttribute("type", "button");
+    keyBtn.textContent = key;
+    keyboard.appendChild(keyBtn);
+  };
+  
+  const keysContainer = document.querySelectorAll('.keys');
+  
+  keysContainer.forEach((key) => {
+    key.addEventListener('click', () => {
+      const letter = key.textContent;
+      if (word.includes(letter)) {
+        for (let i = 0; i < word.length; i++) {
+          if (word[i] === letter) {
+            childNodes[i].textContent = letter;
+          }
+        }
+      } else {
+        key.classList.add("disable");
+        
+      }
+    });
   });
 });
