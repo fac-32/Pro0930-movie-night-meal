@@ -9,14 +9,24 @@
   <body>
     <h1>Guess the Movie’s Filming Location</h1>
     <button class="gameBtn">Start Game?</button>
-    <div id="imgContainer">
-      <img id="city-img" />
+    <div id="endGamePopup" class="hide">
+      <div class="msgContent">
+        <div id="msgBoard"></div>
+        <button id="playAgainBtn">Play Again</button>
+      </div>
     </div>
-    <div id="userGuess"></div>
-    <div id="virtualKeyboard">
-
+    <div id="gameContainer">
+      <div id="content-side">
+        <div id="imgContainer">
+          <img id="city-img" />
+        </div>
+        <div id="userGuess"></div>
+        <div id="virtualKeyboard"></div>
+      </div>
+      <div id="hangman-image-side">
+        <img src="../images/hangman-0.svg">
+      </div>
     </div>
-    <div id="scoreBoard"></div>
     <script src="filmLocation.js"></script>
   </body>
 </html>
