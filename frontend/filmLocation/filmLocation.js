@@ -7,7 +7,7 @@ window.addEventListener("load", async function () {
   const playAgainBtn = document.getElementById("playAgainBtn");
   const userGuess = document.getElementById("userGuess");
   const keyboard = document.getElementById("virtualKeyboard");
-  const hangmanDiv = document.getElementById("hangman-image-side")
+  const hangmanDiv = document.getElementById("hangman-image-side");
 
   let word;
   let isGameOn = true;
@@ -23,7 +23,7 @@ window.addEventListener("load", async function () {
     }
     childNodes = userGuess.childNodes;
   }
-  
+
   // Endgame Msg
 
   function showPopup(msg) {
@@ -31,8 +31,8 @@ window.addEventListener("load", async function () {
     endGamePopup.classList.remove("hide");
     isGameOn = false;
   }
-  
-  // Getting the location 
+
+  // Getting the location
 
   gameButton.addEventListener("click", async () => {
     img.src = "../images/loading-7528_256.gif";
@@ -41,7 +41,7 @@ window.addEventListener("load", async function () {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "gpt-4o",
-        input: `Provide one filming location for the movie ${film} from IMDB or Wikidata databases. The location should include both the city and country, and the answer must be no more than three words. If no official filming location exists, give the location where the original art or setting was established. Always prioritize filming locations from reputable sources, and do not respond with 'can't provide' or 'no info available' — instead, give the fallback location.`
+        input: `Provide one filming location for the movie ${film} from IMDB or Wikidata databases. The location should include both the city and country, and the answer must be no more than three words. If no official filming location exists, give the location where the original art or setting was established. Always prioritize filming locations from reputable sources, and do not respond with 'can't provide' or 'no info available' — instead, give the fallback location.`,
       }),
     });
     if (!response.ok) {
@@ -50,7 +50,10 @@ window.addEventListener("load", async function () {
     const data = await response.json();
     const locationStr = data.result; // "tokyo, Japan"
     const [city, country] = locationStr.split(",").map((s) => s.trim());
-    word = country.match(/[a-zA-Z]+/g).join(' ').toLowerCase();
+    word = country
+      .match(/[a-zA-Z]+/g)
+      .join(" ")
+      .toLowerCase();
 
     console.log(word);
 
@@ -78,16 +81,43 @@ window.addEventListener("load", async function () {
     createInputFields();
 
     // Creating Virtual Keyboard
-    const keys = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "a", "s", "d", "f", "g", "h", "j", "k", "l", "z", "x", "c", "v", "b", "n", "m"];
+    const keys = [
+      "q",
+      "w",
+      "e",
+      "r",
+      "t",
+      "y",
+      "u",
+      "i",
+      "o",
+      "p",
+      "a",
+      "s",
+      "d",
+      "f",
+      "g",
+      "h",
+      "j",
+      "k",
+      "l",
+      "z",
+      "x",
+      "c",
+      "v",
+      "b",
+      "n",
+      "m",
+    ];
     for (let key of keys) {
       const keyBtn = document.createElement("button");
       keyBtn.classList.add("keys");
       keyBtn.setAttribute("type", "button");
       keyBtn.textContent = key;
       keyboard.appendChild(keyBtn);
-    };
+    }
 
-    const keysContainer = document.querySelectorAll('.keys');
+    const keysContainer = document.querySelectorAll(".keys");
 
     // gameReset
 
@@ -98,15 +128,15 @@ window.addEventListener("load", async function () {
       endGamePopup.classList.add("hide");
       userGuess.innerHTML = "";
       createInputFields();
-      keysContainer.forEach(key => {
+      keysContainer.forEach((key) => {
         key.classList.remove("disable");
-      }); 
+      });
     }
 
-    //Game Logic 
-    
+    //Game Logic
+
     keysContainer.forEach((key) => {
-      key.addEventListener('click', () => {
+      key.addEventListener("click", () => {
         if (!isGameOn) return;
 
         let letter = key.textContent;
@@ -124,7 +154,9 @@ window.addEventListener("load", async function () {
           hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
         }
 
-        const allRevealed = Array.from(childNodes).every(e => e.textContent !== "");
+        const allRevealed = Array.from(childNodes).every(
+          (e) => e.textContent !== "",
+        );
         if (allRevealed) {
           showPopup("You Win!");
         } else if (maxGuessLeft === 0) {
@@ -133,7 +165,7 @@ window.addEventListener("load", async function () {
       });
     });
 
-    playAgainBtn.addEventListener("click", function() {
+    playAgainBtn.addEventListener("click", function () {
       gameReset();
     });
   });

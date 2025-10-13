@@ -1,7 +1,7 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
@@ -39,10 +39,11 @@ h1 {
 
 #endGamePopup {
   position: fixed;
-  top: 0; left: 0;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -80,25 +81,25 @@ h1 {
 }
 
 #gameContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80vw;
-    border-radius: 12px;
-    padding: 2rem 2.5rem;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    background: lightblue;
-    gap: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  background: lightblue;
+  gap: 2rem;
 }
 
 #content-side {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    flex-grow: 1;
-    max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  flex-grow: 1;
+  max-width: 450px;
 }
 
 #imgContainer {
@@ -118,83 +119,83 @@ h1 {
 }
 
 #userGuess {
-    display: flex;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 8px;
-    min-height: 48px;
-    width: 100%;
-    padding: 0.25rem 0;
-    overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  min-height: 48px;
+  width: 100%;
+  padding: 0.25rem 0;
+  overflow-x: auto;
 }
 
 .userGuessLetter {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.25rem;
-    border-bottom: 2.5px solid #004134;
-    border-radius: 6px 6px 0 0;
-    user-select: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.25rem;
+  border-bottom: 2.5px solid #004134;
+  border-radius: 6px 6px 0 0;
+  user-select: none;
 }
 
 #virtualKeyboard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.4rem;
-    width: 100%;
-    max-width: 450px;
-    padding: 0.5rem 0;
-    background-color: #004134;
-    border-radius: 8px;
-    box-shadow: inset 0 0 15px rgba(0, 75, 50, 0.7);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  max-width: 450px;
+  padding: 0.5rem 0;
+  background-color: #004134;
+  border-radius: 8px;
+  box-shadow: inset 0 0 15px rgba(0, 75, 50, 0.7);
 }
 
 .keys {
-    flex: 1 1 3.6rem;
-    max-width: 3.8rem;
-    height: 3.6rem;
-    background: #006642;
-    color: white;
-    font-size: 1.2rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.25s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    user-select: none;
+  flex: 1 1 3.6rem;
+  max-width: 3.8rem;
+  height: 3.6rem;
+  background: #006642;
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 }
 .keys:hover:not(.disable) {
-    background-color: #003722;
+  background-color: #003722;
 }
 .keys.disable {
-    pointer-events: none;
-    background-color: #a0a0a0;
-    color: #555;
-    cursor: default;
+  pointer-events: none;
+  background-color: #a0a0a0;
+  color: #555;
+  cursor: default;
 }
 
 #hangman-image-side {
-    max-width: 400px;
-    max-height: 400px;
-    padding: 1rem;
-    border-radius: 12px;
-    background: #e6f2f1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 20px rgba(0, 51, 34, 0.1);
+  max-width: 400px;
+  max-height: 400px;
+  padding: 1rem;
+  border-radius: 12px;
+  background: #e6f2f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 20px rgba(0, 51, 34, 0.1);
 }
 
 #hangman-image-side img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 /* Responsive for smaller screens */
@@ -228,4 +229,3 @@ h1 {
     max-width: none;
   }
 }
-
