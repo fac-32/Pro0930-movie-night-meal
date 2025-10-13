@@ -7,12 +7,13 @@ window.addEventListener("load", async function () {
   const playAgainBtn = document.getElementById("playAgainBtn");
   const userGuess = document.getElementById("userGuess");
   const keyboard = document.getElementById("virtualKeyboard");
+  const hangmanDiv = document.getElementById("hangman-image-side")
 
   let word;
   let isGameOn = true;
   let childNodes;
   let maxGuessLeft = 6;
-
+  let imgIndex = 0;
   //create input field
   function createInputFields() {
     for (let char of word) {
@@ -118,6 +119,9 @@ window.addEventListener("load", async function () {
         } else {
           key.classList.add("disable");
           maxGuessLeft -= 1;
+          imgIndex += 1;
+          let hangmanImg = `../images/hangman-${imgIndex}.svg`;
+          hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
         }
 
         const allRevealed = Array.from(childNodes).every(e => e.textContent !== "");
