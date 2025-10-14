@@ -1,8 +1,7 @@
-import {getCurrentRating, populateRatingStars } from "./ratingsUtils.js";
+import { getCurrentRating, populateRatingStars } from "./ratingsUtils.js";
 import { applyMoviePalette } from "./colorPalette/colorPalette.js";
 
 window.addEventListener("load", function () {
-
   const submitButton = document.getElementById("filterSubmit");
   const genreSelection = document.getElementById("genre");
   const startYearSelection = document.getElementById("startYear");
@@ -73,9 +72,9 @@ window.addEventListener("load", function () {
         modal.style.display = "block";
         modalTitle.textContent = `${movie.title} (${new Date(movie.release_date).getFullYear()})`;
         modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
-        modalPoster.onerror = function() {
-        this.onerror = null;
-        this.src = './images/movie_poster_placeholder.png'; 
+        modalPoster.onerror = function () {
+          this.onerror = null;
+          this.src = "./images/movie_poster_placeholder.png";
         };
         modalOverview.textContent = movie.overview;
         modalReleaseDate.textContent = `Release Date: ${new Date(movie.release_date).toLocaleDateString()}`;
@@ -88,9 +87,9 @@ window.addEventListener("load", function () {
       const img = document.createElement("img");
       img.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
       img.alt = movie.title;
-      img.onerror = function() {
-      this.onerror = null;
-      this.src = './images/movie_poster_placeholder.png'; 
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "./images/movie_poster_placeholder.png";
       };
       card.appendChild(img);
 

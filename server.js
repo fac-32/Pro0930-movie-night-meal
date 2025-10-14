@@ -178,7 +178,7 @@ app.get("/get-movies", async (req, res) => {
     const endDate = req.query.endDate;
     const rating = req.query.rating;
 
-    const voteValue = (rating * 2) - 2;
+    const voteValue = rating * 2 - 2;
 
     const url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&language=en-US&page=1&with_genres=${genreID}&primary_release_date.gte=${startDate}&primary_release_date.lte=${endDate}&vote_average.gte=${voteValue}&api_key=${TMDB_API_KEY}`;
     const response = await fetch(url);
