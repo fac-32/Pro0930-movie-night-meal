@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="signin/signIn.js"></script>
     <title>Movie Night Meal</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -24,6 +26,16 @@
     </div>
 
     <h1>Movie Night Meal</h1>
+
+    <div
+      id="g_id_onload"
+      data-client_id="693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com"
+      data-callback="handleCredentialResponse"
+    ></div>
+    <div class="g_id_signin" data-type="standard"></div>
+    <div class="userDetails"></div>
+    <div class="g_id_signout">Sign Out</div>
+
     <input
       type="color"
       id="color-input"

@@ -3,15 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="styleSheet" href="game.css" />
     <title>Filmed Location</title>
   </head>
   <body>
-    <h1>Filmed Location</h1>
-    <button class="gameBtn">Guess the Location?</button>
-    <div>
-      <img id="city-img" />
+    <h1>Guess the Movie’s Filming Location</h1>
+    <button class="gameBtn">Start Game?</button>
+    <div id="endGamePopup" class="hide">
+      <div class="msgContent">
+        <div id="msgBoard"></div>
+        <button id="playAgainBtn">Play Again</button>
+      </div>
     </div>
-    <input id="location" placeholder="Enter your Guess" />
+    <div id="gameContainer">
+      <div id="content-side">
+        <div id="imgContainer">
+          <img id="city-img" />
+        </div>
+        <div id="userGuess"></div>
+        <div id="virtualKeyboard"></div>
+      </div>
+      <div id="hangman-image-side">
+        <img src="../images/hangman-0.svg" />
+      </div>
+    </div>
     <script src="filmLocation.js"></script>
   </body>
 </html>
