@@ -7,10 +7,11 @@
     <title>Filmed Location</title>
   </head>
   <body>
-    <h1>Guess the Movie’s Filming Location</h1>
+    <h1 id="gameHeader"></h1>
     <button class="gameBtn">Start Game?</button>
     <div id="endGamePopup" class="hide">
       <div class="msgContent">
+        <img id="emoji">
         <div id="msgBoard"></div>
         <button id="playAgainBtn">Play Again</button>
       </div>
@@ -20,6 +21,7 @@
         <div id="imgContainer">
           <img id="city-img" />
         </div>
+        <div id="hints"></div>
         <div id="userGuess"></div>
         <div id="virtualKeyboard"></div>
       </div>

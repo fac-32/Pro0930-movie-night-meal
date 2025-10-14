@@ -1,19 +1,27 @@
 window.addEventListener("load", async function () {
   const film = localStorage.getItem("filmTitle");
+  const pageTitle = document.getElementById("gameHeader")
   const img = document.getElementById("city-img");
   const gameButton = document.querySelector(".gameBtn");
   const endGamePopup = document.getElementById("endGamePopup");
+  const emoji = document.getElementById("emoji");
   const msgBoard = document.getElementById("msgBoard");
   const playAgainBtn = document.getElementById("playAgainBtn");
+  const hints = document.getElementById("hints");
   const userGuess = document.getElementById("userGuess");
   const keyboard = document.getElementById("virtualKeyboard");
   const hangmanDiv = document.getElementById("hangman-image-side");
+
+  pageTitle.textContent = `Guess the "${film}" movie's filming location`;
 
   let word;
   let isGameOn = true;
   let childNodes;
   let maxGuessLeft = 6;
   let imgIndex = 0;
+  let win = "../images/victory.gif";
+  let lose = "../images/lost.gif";
+
   //create input field
   function createInputFields() {
     for (let char of word) {
@@ -26,10 +34,18 @@ window.addEventListener("load", async function () {
 
   // Endgame Msg
 
-  function showPopup(msg) {
-    msgBoard.textContent = msg;
+  function showPopup(msg, country, url) {
+    emoji.src = url;
+    msgBoard.textContent = `${msg} Answer: ${country}`;
     endGamePopup.classList.remove("hide");
     isGameOn = false;
+  }
+
+  // Load Hangman Image
+
+  function loadHangmanImg(imgIndex) {
+    let hangmanImg = `../images/hangman-${imgIndex}.svg`;
+    hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
   }
 
   // Getting the location
@@ -80,7 +96,10 @@ window.addEventListener("load", async function () {
 
     createInputFields();
 
+    hints.textContent = "Hint: It's Country, not City/State"
+
     // Creating Virtual Keyboard
+
     const keys = [
       "q",
       "w",
@@ -124,6 +143,8 @@ window.addEventListener("load", async function () {
     function gameReset() {
       isGameOn = true;
       maxGuessLeft = 6;
+      imgIndex = 0;
+      loadHangmanImg(imgIndex);
       msgBoard.textContent = "";
       endGamePopup.classList.add("hide");
       userGuess.innerHTML = "";
@@ -150,17 +171,16 @@ window.addEventListener("load", async function () {
           key.classList.add("disable");
           maxGuessLeft -= 1;
           imgIndex += 1;
-          let hangmanImg = `../images/hangman-${imgIndex}.svg`;
-          hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
+          loadHangmanImg(imgIndex);
         }
 
         const allRevealed = Array.from(childNodes).every(
           (e) => e.textContent !== "",
         );
         if (allRevealed) {
-          showPopup("You Win!");
+          showPopup("You Win!", word, win);
         } else if (maxGuessLeft === 0) {
-          showPopup("You Lose.");
+          showPopup("You Lose.", word, lose);
         }
       });
     });
