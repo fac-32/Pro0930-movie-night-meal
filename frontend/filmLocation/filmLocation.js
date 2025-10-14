@@ -1,6 +1,6 @@
 window.addEventListener("load", async function () {
   const film = localStorage.getItem("filmTitle");
-  const pageTitle = document.getElementById("gameHeader")
+  const pageTitle = document.getElementById("gameHeader");
   const img = document.getElementById("city-img");
   const gameButton = document.querySelector(".gameBtn");
   const endGamePopup = document.getElementById("endGamePopup");
@@ -96,7 +96,7 @@ window.addEventListener("load", async function () {
 
     createInputFields();
 
-    hints.textContent = "Hint: It's Country, not City/State"
+    hints.textContent = "Hint: It's Country, not City/State";
 
     // Creating Virtual Keyboard
 
