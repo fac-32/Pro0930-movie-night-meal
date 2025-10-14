@@ -1,3 +1,4 @@
+import { getCurrentRating, populateRatingStars } from "./ratingsUtils.js";
 import { applyMoviePalette } from "./colorPalette/colorPalette.js";
 
 window.addEventListener("load", function () {
@@ -6,7 +7,7 @@ window.addEventListener("load", function () {
   const startYearSelection = document.getElementById("startYear");
   const endYearSelection = document.getElementById("endYear");
   const errorMessage = document.getElementById("error-message");
-  const choiceContainer = document.getElementById("choice-container");
+  //const choiceContainer = document.getElementById("choice-container");
 
   const modal = document.getElementById("myModal");
   const span = document.getElementById("modal-close");
@@ -30,16 +31,16 @@ window.addEventListener("load", function () {
     const startYear = startYearSelection.value;
     const endYear = endYearSelection.value;
 
-    fetchMovies(currentGenreID, startYear, endYear);
+    fetchMovies(currentGenreID, startYear, endYear, getCurrentRating());
   });
 
-  async function fetchMovies(genreID, startYear, endYear) {
+  async function fetchMovies(genreID, startYear, endYear, rating) {
     // get start and end year dates
     const startDate = new Date(startYear, 0, 1).toISOString().slice(0, 10);
     const endDate = new Date(endYear, 11, 31).toISOString().slice(0, 10);
 
     // call API - get movies
-    const url = `/get-movies?genreID=${genreID}&startDate=${startDate}&endDate=${endDate}`;
+    const url = `/get-movies?genreID=${genreID}&startDate=${startDate}&endDate=${endDate}&rating=${rating}`;
 
     try {
       const response = await fetch(url);
@@ -48,7 +49,6 @@ window.addEventListener("load", function () {
       }
 
       const result = await response.json();
-      console.log(result);
 
       const movies = result.results;
       populateMovies(movies);
@@ -72,6 +72,10 @@ window.addEventListener("load", function () {
         modal.style.display = "block";
         modalTitle.textContent = `${movie.title} (${new Date(movie.release_date).getFullYear()})`;
         modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
+        modalPoster.onerror = function () {
+          this.onerror = null;
+          this.src = "./images/movie_poster_placeholder.png";
+        };
         modalOverview.textContent = movie.overview;
         modalReleaseDate.textContent = `Release Date: ${new Date(movie.release_date).toLocaleDateString()}`;
         populateRatingStars(modalRatingContainer, movie.vote_average);
@@ -83,6 +87,10 @@ window.addEventListener("load", function () {
       const img = document.createElement("img");
       img.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
       img.alt = movie.title;
+      img.onerror = function () {
+        this.onerror = null;
+        this.src = "./images/movie_poster_placeholder.png";
+      };
       card.appendChild(img);
 
       const info = document.createElement("div");
@@ -103,18 +111,6 @@ window.addEventListener("load", function () {
       card.appendChild(info);
       moviesContainer.appendChild(card);
     });
-  }
-
-  function populateRatingStars(ratingContainer, ratingValue) {
-    const numberOfStars = Math.ceil(ratingValue / 2);
-
-    for (let index = 0; index < numberOfStars; index++) {
-      const star = document.createElement("img");
-      star.src = "./images/Star.png";
-      star.width = 30;
-      star.height = 30;
-      ratingContainer.appendChild(star);
-    }
   }
 
   span.onclick = function () {
