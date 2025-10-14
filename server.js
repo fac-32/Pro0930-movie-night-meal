@@ -6,8 +6,8 @@ import path from "path";
 import OpenAI from "openai";
 import { paletteRouter } from "./backend/routes/colorPaletteRoute.js";
 
-import { connectDB } from "./config/db.js";
-import Whishlist from "./models/wishlist.model.js";
+import { connectDB } from "./backend/config/db.js";
+import Whishlist from "./backend/models/wishlist.model.js";
 
 dotenv.config();
 const port = process.env._PORT || 3000;
