@@ -12,7 +12,9 @@ const movieTitle = localStorage.getItem("filmTitle");
 movieTitleEL.innerText = movieTitle;
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const res = await fetch(`/api/recipe?movie=${encodeURIComponent(movieTitle)}`);
+  const res = await fetch(
+    `/api/recipe?movie=${encodeURIComponent(movieTitle)}`,
+  );
   const data = await res.json();
 
   ingrediantsEL.innerHTML = "Ingrediants: " + data.ingrediants;

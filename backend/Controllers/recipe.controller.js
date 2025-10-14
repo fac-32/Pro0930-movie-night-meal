@@ -17,7 +17,10 @@ let dishInfo = {
 };
 
 function cleanMarkdown(text = "") {
-  return text.replace(/[#*`]/g, "").replace(/\s{2,}/g, " ").trim();
+  return text
+    .replace(/[#*`]/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 export const getRecipe = async (req, res) => {
@@ -47,8 +50,7 @@ export const getRecipe = async (req, res) => {
       "instructions": "string (step-by-step)",
       "calories": "number",
       "healthScore": "number"
-    }
-    `;
+    }`;
 
     const response = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -63,9 +65,7 @@ export const getRecipe = async (req, res) => {
       data = JSON.parse(rawContent);
     } catch (e) {
       console.error("Could not parse JSON, attempting cleanup...");
-      data = JSON.parse(
-        rawContent.replace(/```json|```/g, "").trim()
-      );
+      data = JSON.parse(rawContent.replace(/```json|```/g, "").trim());
     }
 
     dishInfo = {
@@ -77,8 +77,6 @@ export const getRecipe = async (req, res) => {
       calories: data.calories || "N/A",
       healthScore: data.healthScore || "N/A",
     };
-
-    console.log("Recipe generated:", dishInfo);
 
     res.json(dishInfo);
   } catch (error) {
