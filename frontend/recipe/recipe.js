@@ -6,6 +6,7 @@ const movieTitleEL = document.getElementById("movieTitle");
 const gameContainer = document.getElementById("gameSection");
 const dishNameEL = document.getElementById("dishName");
 const caloriesEL = document.getElementById("calories");
+const loadingImgEL = document.getElementById("loadingImg");
 
 const movieTitle = localStorage.getItem("filmTitle");
 
@@ -23,6 +24,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   summaryEL.innerHTML = "Summary: " + data.summary;
   dishNameEL.innerHTML = "Dish Name: " + data.dishName;
   caloriesEL.innerHTML = "Calories: " + data.calories;
+  loadingImgEL.src = "";
 
   const gameBtn = document.createElement("button");
   gameBtn.classList.add("gameBtn");
