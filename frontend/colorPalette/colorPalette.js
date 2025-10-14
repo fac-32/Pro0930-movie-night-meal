@@ -1,12 +1,12 @@
-const colorInput = document.getElementById("color-input");
-const root = document.documentElement;
+//const colorInput = document.getElementById("color-input");
+//const root = document.documentElement;
 
-const setBackgroundColor = (color) => {
-  root.style.setProperty("--bg-color", color);
-};
+//const setBackgroundColor = (color) => {
+//  root.style.setProperty("--bg-color", color);
+//};
 
-colorInput.value = getComputedStyle(root).getPropertyValue("--bg-color").trim();
+//colorInput.value = getComputedStyle(root).getPropertyValue("--bg-color").trim();
 
-colorInput.addEventListener("input", () =>
-  setBackgroundColor(colorInput.value),
-);
+//colorInput.addEventListener("input", () =>
+//  setBackgroundColor(colorInput.value),
+//);

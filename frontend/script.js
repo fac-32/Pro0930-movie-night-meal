@@ -49,7 +49,6 @@ window.addEventListener("load", function () {
       }
 
       const result = await response.json();
-      console.log(result);
 
       const movies = result.results;
       populateMovies(movies);
