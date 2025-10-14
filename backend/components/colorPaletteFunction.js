@@ -24,8 +24,7 @@ export async function getColorsForMovie(movieTitle, randomPixels, apiKey) {
     input: [
       {
         role: "system",
-        content:
-          `You are a film-savvy color designer creating UI palettes. Respond with JSON only—no explanations, 
+        content: `You are a film-savvy color designer creating UI palettes. Respond with JSON only—no explanations, 
           markdown, or prose. Each palette must include exactly five-digit hex colors under the keys: 
           --color-primary, --bg-color, --section-bg-color, --text-color-accent, --text-color.`,
       },
