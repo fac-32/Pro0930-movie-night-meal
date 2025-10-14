@@ -24,7 +24,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   summaryEL.innerHTML = "Summary: " + data.summary;
   dishNameEL.innerHTML = "Dish Name: " + data.dishName;
   caloriesEL.innerHTML = "Calories: " + data.calories;
-  loadingImgEL.src="";
+  loadingImgEL.src = "";
 
   const gameBtn = document.createElement("button");
   gameBtn.classList.add("gameBtn");
