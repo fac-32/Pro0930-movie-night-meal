@@ -4,19 +4,27 @@ const summaryEL = document.getElementById("summary");
 const healthScoreEL = document.getElementById("healthScore");
 const movieTitleEL = document.getElementById("movieTitle");
 const gameContainer = document.getElementById("gameSection");
+const dishNameEL = document.getElementById("dishName");
+const caloriesEL = document.getElementById("calories");
+const loadingImgEL = document.getElementById("loadingImg");
 
 const movieTitle = localStorage.getItem("filmTitle");
 
 movieTitleEL.innerText = movieTitle;
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const res = await fetch("/recipe");
+  const res = await fetch(
+    `/api/recipe?movie=${encodeURIComponent(movieTitle)}`,
+  );
   const data = await res.json();
 
-  ingrediantsEL.innerHTML = data.ingrediants;
-  instructionsEL.innerHTML = data.instructions;
-  healthScoreEL.innerHTML = data.healthScore;
-  summaryEL.innerHTML = data.summary;
+  ingrediantsEL.innerHTML = "Ingrediants: " + data.ingrediants;
+  instructionsEL.innerHTML = "Instructions: " + data.instructions;
+  healthScoreEL.innerHTML = "Health Score: " + data.healthScore;
+  summaryEL.innerHTML = "Summary: " + data.summary;
+  dishNameEL.innerHTML = "Dish Name: " + data.dishName;
+  caloriesEL.innerHTML = "Calories: " + data.calories;
+  loadingImgEL.src = "";
 
   const gameBtn = document.createElement("button");
   gameBtn.classList.add("gameBtn");
