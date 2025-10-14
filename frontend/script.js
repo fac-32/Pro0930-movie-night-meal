@@ -1,4 +1,5 @@
 import {getCurrentRating, populateRatingStars } from "./ratingsUtils.js";
+import { applyMoviePalette } from "./colorPalette/colorPalette.js";
 
 window.addEventListener("load", function () {
 
@@ -81,6 +82,7 @@ window.addEventListener("load", function () {
         populateRatingStars(modalRatingContainer, movie.vote_average);
 
         localStorage.setItem("filmTitle", movie.title);
+        applyMoviePalette(modalPoster.src);
       });
 
       const img = document.createElement("img");
@@ -137,16 +139,6 @@ window.addEventListener("load", function () {
 
   startYearSelection.addEventListener("input", validateReleaseYears);
   endYearSelection.addEventListener("input", validateReleaseYears);
-
-  const gameBtn = document.createElement("button");
-  gameBtn.classList.add("gameBtn");
-  gameBtn.type = "button";
-  gameBtn.textContent = "Play Game?";
-  choiceContainer.appendChild(gameBtn);
-
-  gameBtn.addEventListener("click", () => {
-    window.location.href = "filmLocation/filmLocation.html";
-  });
 
   modalSelectButton.addEventListener("click", () => {
     window.location.href = "recipe/recipe.html";

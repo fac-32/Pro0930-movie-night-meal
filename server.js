@@ -4,14 +4,20 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
 import OpenAI from "openai";
+import { paletteRouter } from "./backend/routes/colorPaletteRoute.js";
+import { OAuth2Client } from "google-auth-library";
+
+import { connectDB } from "./backend/config/db.js";
+import Whishlist from "./backend/models/wishlist.model.js";
 
 dotenv.config();
 const port = process.env._PORT || 3000;
-const API_KEY = process.env.API_KEY;
+// const API_KEY = process.env.API_KEY;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const RECIPE_API_KEY = process.env.RECIPE_API_KEY;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -20,6 +26,35 @@ const staticPath = path.join(__dirname, "/frontend");
 
 app.use(express.static(staticPath));
 app.use(express.json());
+
+//Google Signin
+const client = new OAuth2Client(
+  "693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com",
+);
+
+async function verifyGoogleToken(token) {
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience:
+      "693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com",
+  });
+  const payload = ticket.getPayload();
+  return payload; // Contains user info: email, name, picture, sub (unique ID)
+}
+
+app.post("/auth/google", async (req, res) => {
+  try {
+    const { token } = req.body;
+    const payload = await verifyGoogleToken(token);
+    res.json({ success: true, user: payload });
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    res.status(401).json({ success: false, message: "Invalid token" });
+  }
+});
+
+// route for color palette
+app.use("/api/palette", paletteRouter);
 
 // Recipe
 let dishInfo = {
@@ -109,6 +144,27 @@ app.get("/recipe", async (req, res) => {
   }
 });
 
+// MongooDB
+
+app.post("/api/whishlist", async (req, res) => {
+  const movie = req.body;
+  if (!movie.movieName) {
+    return res
+      .status(400)
+      .json({ success: false, message: "no movie name found" });
+  }
+
+  const newMovie = new Whishlist(movie);
+
+  try {
+    await newMovie.save();
+    res.status(201).json({ success: true, data: newMovie });
+  } catch (error) {
+    console.log("Error in adding movie: ", error.message);
+    res.status(500).jsonp({ success: false, message: "server error" });
+  }
+});
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(staticPath, "index.html"));
   initializeRecipe();
@@ -161,6 +217,24 @@ app.post("/get-location", async (req, res) => {
   }
 });
 
+// Rendering image for the city
+
+app.post("/get-image", async (req, res) => {
+  const { params } = req.body;
+  const url = `https://api.unsplash.com/search/photos?${params}`;
+  const result = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
+    },
+  });
+  console.log("This is working");
+  const output = await result.json();
+  console.log(output);
+  res.send(output);
+});
+
 app.listen(port, () => {
+  connectDB();
   console.log(`Server is running at http://localhost:${port}`);
 });
