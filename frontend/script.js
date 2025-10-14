@@ -8,7 +8,7 @@ window.addEventListener("load", function () {
   const startYearSelection = document.getElementById("startYear");
   const endYearSelection = document.getElementById("endYear");
   const errorMessage = document.getElementById("error-message");
-  const choiceContainer = document.getElementById("choice-container");
+  //const choiceContainer = document.getElementById("choice-container");
 
   const modal = document.getElementById("myModal");
   const span = document.getElementById("modal-close");
