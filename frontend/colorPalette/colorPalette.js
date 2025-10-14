@@ -43,7 +43,7 @@ async function fetchPaletteFromLocalStorage({ randomPixels }) {
   const title = localStorage.getItem(storageKey);
   if (!title || typeof title !== "string" || !title.trim()) {
     throw new Error(
-      `No movie title found in localStorage under key "${storageKey}".`,
+      `No movie title found in localStorage under key "${storageKey}".`
     );
   }
 
@@ -129,9 +129,8 @@ async function getPixelsFromImageUrl(imageUrl) {
 export async function applyMoviePalette(imageUrl) {
   try {
     const randomPixels = await getPixelsFromImageUrl(imageUrl);
+    const palette = await fetchPaletteFromLocalStorage({ randomPixels });
     console.log(palette);
-
-    const palette = await fetchPaletteFromLocalStorage(randomPixels);
     setMovieColors(palette);
   } catch (error) {
     console.error("applyMoviePalette failed:", error);
