@@ -102,7 +102,7 @@ async function getPixelsFromImageUrl(imageUrl) {
   const uniqueSampleIndexes = new Set();
   const randomPixels = [];
 
-  while (uniqueSampleIndexes.size < Math.min(100, totalPixels)) {
+  while (uniqueSampleIndexes.size < Math.min(500, totalPixels)) {
     const randomIndex = Math.floor(Math.random() * totalPixels);
     if (uniqueSampleIndexes.has(randomIndex)) {
       continue;

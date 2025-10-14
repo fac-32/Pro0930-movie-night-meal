@@ -81,6 +81,7 @@ window.addEventListener("load", function () {
         populateRatingStars(modalRatingContainer, movie.vote_average);
 
         localStorage.setItem("filmTitle", movie.title);
+        console.log("modalPoster.src: ", modalPoster.src);
         applyMoviePalette(modalPoster.src);
       });
 
@@ -102,7 +103,7 @@ window.addEventListener("load", function () {
       const options = { year: "numeric", month: "long", day: "2-digit" };
       dateEl.textContent = new Date(movie.release_date).toLocaleDateString(
         "en-US",
-        options,
+        options
       );
 
       info.appendChild(nameEl);

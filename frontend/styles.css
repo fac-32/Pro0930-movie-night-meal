@@ -5,7 +5,7 @@
   --text-color-accent: #ffffff; /*text color for headers*/
   --text-color: #ffffff; /*text color*/
   --banner-text-color: #ffffff;
-  --banner-bg-color: #05071d;
+  --banner-bg-color: #20212a;
 }
 
 @font-face {
@@ -29,7 +29,7 @@
 }
 
 body {
-  background-color: black;
+  background-color: #2b2d3b;
   display: flex;
   justify-content: center;
   align-items: center;
