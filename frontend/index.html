@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./signin/signIn.js"></script>
     <title>Movie Night Meal</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -23,70 +25,113 @@
       </div>
     </div>
 
-    <h1>Movie Night Meal</h1>
-    <input
-      type="color"
-      id="color-input"
-      name="input for color"
-      placeholder="hex code"
-    />
+    <div class="headerBanner" id="headerBanner">
+      <img
+        src="./images/movie_night_meal_icon.png"
+        width="79.2"
+        height="54.6"
+        alt="Movie Night Meal Icon"
+      />
+      <h1>Movie Night Meal</h1>
+    </div>
 
-    <h2>Movie filter</h2>
-    <div id="choice-container">
-      <label for="startYear">From:</label>
-      <input
-        name="startYear"
-        id="startYear"
-        type="number"
-        min="1900"
-        max="2025"
-        step="1"
-        value="2025"
-      /><br />
-      <label for="endYear">To:</label>
-      <input
-        name="endYear"
-        id="endYear"
-        type="number"
-        min="1900"
-        max="2025"
-        step="1"
-        value="2025"
-      /><br />
-      <span id="error-message"
-        >Start year must be less than or equal to end year.</span
-      ><br />
+    <div
+      id="g_id_onload"
+      data-client_id="693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com"
+      data-callback="handleCredentialResponse"
+    ></div>
+    <div class="g_id_signin" data-type="standard"></div>
+    <div class="userDetails"></div>
+    <div class="g_id_signout">Sign Out</div>
 
-      <label for="genre">Choose movie genre:</label>
-      <select name="genre" id="genre">
-        <option value="28" id="action">Action</option>
-        <option value="12" id="adventure">Adventure</option>
-        <option value="16" id="animation">Animation</option>
-        <option value="35" id="comedy">Comedy</option>
-        <option value="80" id="crime">Crime</option>
-        <option value="99" id="documentary">Documentary</option>
-        <option value="18" id="drama">Drama</option>
-        <option value="99" id="documentary">Documentary</option>
-        <option value="10751" id="family">Family</option>
-        <option value="14" id="fantasy">Fantasy</option>
-        <option value="36" id="history">History</option>
-        <option value="27" id="horror">Horror</option>
-        <option value="10402" id="music">Music</option>
-        <option value="9648" id="mystery">Mystery</option>
-        <option value="10749" id="romance">Romance</option>
-        <option value="878" id="science_fiction">Science Fiction</option>
-        <option value="10770" id="tv_movie">TV Movie</option>
-        <option value="53" id="thriller">Thriller</option>
-        <option value="10752" id="war">War</option>
-        <option value="37" id="western">Western</option>
-      </select>
+    <div class="choice-container" id="choice-container">
+      <div class="choice-card">
+        <h3>Release Date</h3>
+        <div class="choice-card-content">
+          <div class="releaseDate-option">
+            <p>from</p>
+            <input
+              name="startYear"
+              id="startYear"
+              type="number"
+              min="1900"
+              max="2025"
+              step="1"
+              value="2025"
+            />
+          </div>
+          <div class="releaseDate-option">
+            <p>to</p>
+            <input
+              name="endYear"
+              id="endYear"
+              type="number"
+              min="1900"
+              max="2025"
+              step="1"
+              value="2025"
+            />
+          </div>
+        </div>
+        <span id="error-message"
+          >Start year must be less than or equal to end year.</span
+        >
+      </div>
 
+      <div class="choice-card">
+        <h3>Genre</h3>
+        <div class="choice-card-content">
+          <select name="genre" id="genre">
+            <option value="28" id="action">Action</option>
+            <option value="12" id="adventure">Adventure</option>
+            <option value="16" id="animation">Animation</option>
+            <option value="35" id="comedy">Comedy</option>
+            <option value="80" id="crime">Crime</option>
+            <option value="99" id="documentary">Documentary</option>
+            <option value="18" id="drama">Drama</option>
+            <option value="99" id="documentary">Documentary</option>
+            <option value="10751" id="family">Family</option>
+            <option value="14" id="fantasy">Fantasy</option>
+            <option value="36" id="history">History</option>
+            <option value="27" id="horror">Horror</option>
+            <option value="10402" id="music">Music</option>
+            <option value="9648" id="mystery">Mystery</option>
+            <option value="10749" id="romance">Romance</option>
+            <option value="878" id="science_fiction">Science Fiction</option>
+            <option value="10770" id="tv_movie">TV Movie</option>
+            <option value="53" id="thriller">Thriller</option>
+            <option value="10752" id="war">War</option>
+            <option value="37" id="western">Western</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="choice-card">
+        <h3>Rating</h3>
+        <div class="choice-card-content">
+          <button id="starRating_1">
+            <img src="./images/Star_dark.png" width="30" height="30" />
+          </button>
+          <button id="starRating_2">
+            <img src="./images/Star_dark.png" width="30" height="30" />
+          </button>
+          <button id="starRating_3">
+            <img src="./images/Star_dark.png" width="30" height="30" />
+          </button>
+          <button id="starRating_4">
+            <img src="./images/Star_dark.png" width="30" height="30" />
+          </button>
+          <button id="starRating_5">
+            <img src="./images/Star_dark.png" width="30" height="30" />
+          </button>
+        </div>
+      </div>
       <button id="filterSubmit" type="submit">Submit</button>
     </div>
 
     <div id="moviesContainer"></div>
 
     <script type="module" src="script.js" defer></script>
-    <!-- <script type="module" src="./colorPalette/colorPalette.js" defer></script> -->
+    <script type="module" src="ratingsUtils.js" defer></script>
   </body>
 </html>
