@@ -16,7 +16,10 @@
           <h2 id="modalMovieTitle"></h2>
           <h3 id="movieReleaseDate"></h3>
           <div id="movieRatingContainer"></div>
-          <p id="movieOverview"></p>
+          <div>
+            <h3>Overview</h3>
+            <p id="movieOverview"></p>
+          </div>
           <button class="movieSelectButton" id="movieSelectButton">
             Select Movie
           </button>
@@ -129,7 +132,11 @@
       <button id="filterSubmit" type="submit">Submit</button>
     </div>
 
-    <div id="moviesContainer"></div>
+    <div id="moviesContainer">
+      <div class="noMoviesContainer">
+        <p>No movies found</p>
+      </div>
+    </div>
 
     <script type="module" src="script.js" defer></script>
     <script type="module" src="ratingsUtils.js" defer></script>
