@@ -41,7 +41,7 @@ body {
 
 h1,
 h2,
-h3{
+h3 {
   font-family: "MainFont-Bold", sans-serif;
 }
 
@@ -104,8 +104,7 @@ select {
   border: #e0dfdf 2px solid;
 }
 
-#recipe-table-info
-{
+#recipe-table-info {
   width: 90%;
   margin: 0 auto;
   display: flex;
@@ -113,24 +112,20 @@ select {
   flex-wrap: wrap;
 }
 
-#left
-{
+#left {
   flex-basis: 45%;
   align-content: center;
   text-align: center;
   font-size: large;
 }
 
-#right
-{
+#right {
   flex-basis: 45%;
   text-align: center;
   align-content: center;
   font-size: large;
-
 }
 
-.hide-title
-{
+.hide-title {
   display: none;
 }

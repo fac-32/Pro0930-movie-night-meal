@@ -32,8 +32,8 @@ window.addEventListener("DOMContentLoaded", async () => {
   loadingImgEL.src = "";
 
   Array.from(hiddenTitlesEL).forEach((el) => {
-  el.style.display = "block";
-});
+    el.style.display = "block";
+  });
 
   const gameBtn = document.createElement("button");
   gameBtn.classList.add("gameBtn");
