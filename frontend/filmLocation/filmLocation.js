@@ -14,7 +14,7 @@ window.addEventListener("load", async function () {
 
   pageTitle.textContent = `Guess the "${film}" movie's filming location`;
 
-  let word;
+  let guessWord;
   let isGameOn = true;
   let childNodes;
   let maxGuessLeft = 6;
@@ -48,6 +48,15 @@ window.addEventListener("load", async function () {
     hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
   }
 
+  // Capitalize First Letter
+
+  function capitalizeEachWord(str) {
+    return str
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
   // Getting the location
 
   gameButton.addEventListener("click", async () => {
@@ -66,12 +75,17 @@ window.addEventListener("load", async function () {
     const data = await response.json();
     const locationStr = data.result; // "tokyo, Japan"
     const [city, country] = locationStr.split(",").map((s) => s.trim());
-    word = country
+
+    // 
+    let word = country
       .match(/[a-zA-Z]+/g)
       .join(" ")
       .toLowerCase();
 
-    console.log(word);
+    let titleCaseWord = capitalizeEachWord(word);
+    guessWord = word.replace(/\s+/g, "");
+
+    console.log(guessWord);
 
     // Getting the Image
     const params = new URLSearchParams({
@@ -96,7 +110,7 @@ window.addEventListener("load", async function () {
 
     createInputFields();
 
-    hints.textContent = "Hint: It's Country, not City/State";
+    hints.textContent = "Hint: It's Country/State, but not City";
 
     // Creating Virtual Keyboard
 
@@ -161,9 +175,9 @@ window.addEventListener("load", async function () {
         if (!isGameOn) return;
 
         let letter = key.textContent;
-        if (word.includes(letter)) {
-          for (let i = 0; i < word.length; i++) {
-            if (word[i] === letter) {
+        if (guessWord.includes(letter)) {
+          for (let i = 0; i < guessWord.length; i++) {
+            if (guessWord[i] === letter) {
               childNodes[i].textContent = letter;
             }
           }
@@ -178,9 +192,9 @@ window.addEventListener("load", async function () {
           (e) => e.textContent !== "",
         );
         if (allRevealed) {
-          showPopup("You Win!", word, win);
+          showPopup("You Win!", titleCaseWord, win);
         } else if (maxGuessLeft === 0) {
-          showPopup("You Lose.", word, lose);
+          showPopup("You Lose.", titleCaseWord, lose);
         }
       });
     });

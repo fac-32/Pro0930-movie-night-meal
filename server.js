@@ -3,22 +3,20 @@ import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import path from "path";
-import OpenAI from "openai";
-import { paletteRouter } from "./backend/routes/colorPaletteRoute.js";
-import { OAuth2Client } from "google-auth-library";
 
+import { OAuth2Client } from "google-auth-library";
 import { connectDB } from "./backend/config/db.js";
+
+import paletteRouter from "./backend/routes/colorPaletteRoute.js";
 import whishlistRouter from "./backend/routes/whishlist.route.js";
 import recipeRouter from "./backend/routes/recipe.route.js";
+import gameRouter from "./backend/routes/gameRoute.js";
+
 
 dotenv.config();
-const port = process.env._PORT || 3000;
-// const API_KEY = process.env.API_KEY;
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-//const RECIPE_API_KEY = process.env.RECIPE_API_KEY;
+const port = process.env._PORT || 3000;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
-const UNSPLASH_API_KEY = process.env.UNSPLASH_API_KEY;
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -30,6 +28,7 @@ app.use(express.json());
 
 app.use("/api/whishlist", whishlistRouter);
 app.use("/api/recipe", recipeRouter);
+app.use("/api/game", gameRouter);
 
 //Google Signin
 const client = new OAuth2Client(
@@ -86,46 +85,6 @@ app.get("/get-movies", async (req, res) => {
   } catch (error) {
     console.error(error.message);
   }
-});
-
-// finding filmed location
-
-app.post("/get-location", async (req, res) => {
-  const openai = new OpenAI({
-    apiKey: OPENAI_API_KEY,
-  });
-  const { model, input } = req.body;
-  try {
-    const response = await openai.responses.create({
-      model: model,
-      input: [
-        {
-          role: "user",
-          content: input,
-        },
-      ],
-    });
-    res.json({ result: response.output_text });
-  } catch (e) {
-    res.status(500).json({ error: e.message || "Internal Server Error" });
-  }
-});
-
-// Rendering image for the city
-
-app.post("/get-image", async (req, res) => {
-  const { params } = req.body;
-  const url = `https://api.unsplash.com/search/photos?${params}`;
-  const result = await fetch(url, {
-    method: "GET",
-    headers: {
-      Authorization: `Client-ID ${UNSPLASH_API_KEY}`,
-    },
-  });
-  console.log("This is working");
-  const output = await result.json();
-  console.log(output);
-  res.send(output);
 });
 
 app.listen(port, () => {
