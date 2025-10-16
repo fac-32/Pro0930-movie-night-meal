@@ -69,7 +69,7 @@ window.addEventListener("load", function () {
       card.addEventListener("click", () => {
         modalRatingContainer.innerHTML = "";
         // populate movie modal
-        modal.style.display = "block";
+        modal.style.display = "flex";
         modalTitle.textContent = `${movie.title} (${new Date(movie.release_date).getFullYear()})`;
         modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
         modalPoster.onerror = function () {
