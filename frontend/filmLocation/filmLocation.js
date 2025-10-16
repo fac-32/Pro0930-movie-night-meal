@@ -142,6 +142,9 @@ window.addEventListener("load", async function () {
       "n",
       "m",
     ];
+    
+    keyboard.innerHTML = "";
+
     for (let key of keys) {
       const keyBtn = document.createElement("button");
       keyBtn.classList.add("keys");
