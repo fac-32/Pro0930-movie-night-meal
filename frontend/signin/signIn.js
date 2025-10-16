@@ -52,6 +52,8 @@ async function handleCredentialResponse(response) {
 
   userContainer.textContent = `Hello, ${responsePayload.given_name}`;
   console.log(`username = ${responsePayload.given_name}`);
+  let email = responsePayload.email;
+  console.log(email);
   userContainer.style.display = "block";
   signInBtn.style.display = "none";
   signOutBtn.style.display = "block";
