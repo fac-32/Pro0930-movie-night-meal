@@ -289,3 +289,24 @@ select {
   height: 100vh;
   color:#f5f3f3
 }
+
+.google_container {
+  position: absolute;
+  right: 14px;
+  top: 5px;
+}
+
+.g_id_signout {
+  color: #030518;
+  cursor: pointer;
+  font-family: "MainFont-Reg", sans-serif;
+  background-color: #dfe3f8;
+  text-align: center;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.userDetails {
+  color: #f5f3f3;
+  font-family: "MainFont-Reg", sans-serif;
+}
