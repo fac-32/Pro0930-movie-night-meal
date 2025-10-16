@@ -8,4 +8,3 @@ router.post("/get-location", getLocation);
 router.post("/get-image", getImage);
 
 export default router;
-

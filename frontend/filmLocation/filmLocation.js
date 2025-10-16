@@ -66,17 +66,17 @@ window.addEventListener("load", async function () {
       loadHangmanImg(imgIndex);
 
       const keys = Array.from(keyboard.children);
-      keys.forEach((k) => 
-        state.guessedKeys?.includes(k.textContent) 
-          ? k.classList.add("disable") 
-          : k.classList.remove("disable")
+      keys.forEach((k) =>
+        state.guessedKeys?.includes(k.textContent)
+          ? k.classList.add("disable")
+          : k.classList.remove("disable"),
       );
 
       if (!isGameOn && lastGameResult) {
         showPopup(
           lastGameResult === "win" ? "You Win!" : "You Lose.",
           capitalizeEachWord(guessWord),
-          lastGameResult === "win" ? win : lose
+          lastGameResult === "win" ? win : lose,
         );
       }
 
@@ -119,7 +119,7 @@ window.addEventListener("load", async function () {
   function capitalizeEachWord(str) {
     return str
       .split(" ")
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
 
@@ -154,7 +154,7 @@ window.addEventListener("load", async function () {
       "n",
       "m",
     ];
-    
+
     keyboard.innerHTML = "";
 
     for (let key of keys) {
@@ -163,7 +163,7 @@ window.addEventListener("load", async function () {
       keyBtn.setAttribute("type", "button");
       keyBtn.textContent = key;
       keyboard.appendChild(keyBtn);
-    };
+    }
   }
 
   // Game Reset
@@ -182,11 +182,11 @@ window.addEventListener("load", async function () {
       key.classList.remove("disable");
     });
     if (fullReset) {
-      img.src = ""; 
+      img.src = "";
     }
     lastGameResult = null;
     saveState();
-  };
+  }
 
   // Game Logic
 
@@ -275,11 +275,13 @@ window.addEventListener("load", async function () {
 
     console.log("This is working");
     const output = await result.json();
+    console.log(output);
 
     if (output.results && output.results.length > 0) {
       img.src = output.results[0].urls.small;
+      console.log(img.src);
     } else {
-      img.src = ""; 
+      img.src = "";
     }
 
     createInputFields();

@@ -2,7 +2,7 @@
 import { Router } from "express";
 import { getColorsForMovie } from "../components/colorPaletteFunction.js";
 
-export const paletteRouter = Router();
+const paletteRouter = Router();
 
 // POST /api/palette  { "title": "Inception" }
 paletteRouter.post("/", async (req, res) => {
@@ -25,6 +25,8 @@ paletteRouter.post("/", async (req, res) => {
     return res.status(500).json({ ok: false, error: err.message });
   }
 });
+
+export default paletteRouter;
 
 // /api/palette/hello
 //paletteRouter.post("/hello", async (req, res) => {})

@@ -1,10 +1,10 @@
 import OpenAI from "openai";
 
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-export const getLocation = async(req, res) => {
+export const getLocation = async (req, res) => {
   const { model, input } = req.body;
   try {
     const response = await openai.responses.create({
