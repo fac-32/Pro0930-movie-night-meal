@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Food Recipe</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./recipe.css" />
   </head>
   <body>
     <div class="headerBanner" id="headerBanner">
@@ -18,15 +18,27 @@
     </div>
     <div id="recipeSection">
       <h1 id="movieTitle"></h1>
-      <p id="dishName"></p>
+      <h2 id="dishName"></h2>
       <img id="loadingImg" src="../images/loading-7528_256.gif" />
-      <p id="ingrediants"></p>
+
+      <div id="recipe-table-info">
+        <div id="left">
+          <h3 class="hide-title">Ingrediants</h3>
+          <p id="ingrediants"></p>
+        </div>
+
+        <div id="right">
+          <h3 class="hide-title">Summary</h3>
+          <p id="summary"></p>
+        </div>
+
+      </div>
+      <h3 class="hide-title">Instructions</h3>
       <p id="instructions"></p>
       <p id="healthScore"></p>
       <p id="calories"></p>
-      <p id="summary"></p>
     </div>
     <div id="gameSection"></div>
-    <script src="recipe.js"></script>
+    <script src="./recipe.js"></script>
   </body>
 </html>

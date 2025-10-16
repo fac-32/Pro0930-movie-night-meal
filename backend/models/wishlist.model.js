@@ -6,6 +6,10 @@ const whichlistSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    userEmail: {
+      type: String,
+      required: true,
+    }
   },
   {
     timestamps: true, // it has the: createdAt, updatedAt
