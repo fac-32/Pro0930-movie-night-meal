@@ -29,7 +29,12 @@
 }
 
 body {
-  background-color: black;
+  background-color: #05071d;
+  background-image: linear-gradient(to bottom, #0a0d33, black);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
   display: flex;
   justify-content: center;
   -webkit-align-items: center;
@@ -158,12 +163,29 @@ button:hover {
   max-height: 80vh;
   overflow-y: auto;
   background-color: var(--banner-bg-color);
+  background-image: url("path/to/your/image.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   color: var(--banner-text-color);
   border: #ffffff 2px solid;
   padding: 20px;
   border-radius: 4px;
   width: 80%;
   position: relative;
+  z-index: 0;
+}
+
+.modal-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(1, 9, 34, 0.85);
+  z-index: -1;
 }
 
 .modalMovieInfo {
@@ -263,4 +285,30 @@ select {
 #error-message {
   color: red;
   display: none;
+}
+
+.noMoviesContainer {
+  height: 100vh;
+  color: #f5f3f3;
+}
+
+.google_container {
+  position: absolute;
+  right: 14px;
+  top: 5px;
+}
+
+.g_id_signout {
+  color: #030518;
+  cursor: pointer;
+  font-family: "MainFont-Reg", sans-serif;
+  background-color: #dfe3f8;
+  text-align: center;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.userDetails {
+  color: #f5f3f3;
+  font-family: "MainFont-Reg", sans-serif;
 }
