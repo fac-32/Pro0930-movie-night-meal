@@ -16,7 +16,10 @@
           <h2 id="modalMovieTitle"></h2>
           <h3 id="movieReleaseDate"></h3>
           <div id="movieRatingContainer"></div>
-          <p id="movieOverview"></p>
+          <div>
+            <h3>Overview</h3>
+            <p id="movieOverview"></p>
+          </div>
           <button class="movieSelectButton" id="movieSelectButton">
             Select Movie
           </button>
@@ -33,16 +36,18 @@
         alt="Movie Night Meal Icon"
       />
       <h1>Movie Night Meal</h1>
-    </div>
 
-    <div
-      id="g_id_onload"
-      data-client_id="693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com"
-      data-callback="handleCredentialResponse"
-    ></div>
-    <div class="g_id_signin" data-type="standard"></div>
-    <div class="userDetails"></div>
-    <div class="g_id_signout">Sign Out</div>
+      <div
+        id="g_id_onload"
+        data-client_id="693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse"
+      ></div>
+      <div class="google_container">
+        <div class="g_id_signin" data-type="standard"></div>
+        <div class="userDetails"></div>
+        <div class="g_id_signout">Sign Out</div>
+      </div>
+    </div>
 
     <div class="choice-container" id="choice-container">
       <div class="choice-card">
@@ -129,7 +134,11 @@
       <button id="filterSubmit" type="submit">Submit</button>
     </div>
 
-    <div id="moviesContainer"></div>
+    <div id="moviesContainer">
+      <div class="noMoviesContainer">
+        <p>No movies found</p>
+      </div>
+    </div>
 
     <script type="module" src="script.js" defer></script>
     <script type="module" src="ratingsUtils.js" defer></script>
