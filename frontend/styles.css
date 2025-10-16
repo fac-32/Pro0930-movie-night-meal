@@ -28,13 +28,12 @@
   src: url("./fonts/FunnelSans-Light.ttf") format("truetype");
 }
 
-
 body {
   background-color: #05071d;
   background-image: linear-gradient(to bottom, #0a0d33, black);
-  background-size: cover;  
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;            
+  background-position: center;
 
   display: flex;
   justify-content: center;
@@ -164,9 +163,9 @@ button:hover {
   max-height: 80vh;
   overflow-y: auto;
   background-color: var(--banner-bg-color);
-  background-image: url('path/to/your/image.jpg'); 
-  background-size: cover;          
-  background-position: center;     
+  background-image: url("path/to/your/image.jpg");
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
 
   color: var(--banner-text-color);
@@ -180,9 +179,12 @@ button:hover {
 
 .modal-content::before {
   content: "";
-  position: absolute; 
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(1, 9, 34, 0.85); 
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(1, 9, 34, 0.85);
   z-index: -1;
 }
 
@@ -287,7 +289,7 @@ select {
 
 .noMoviesContainer {
   height: 100vh;
-  color:#f5f3f3
+  color: #f5f3f3;
 }
 
 .google_container {

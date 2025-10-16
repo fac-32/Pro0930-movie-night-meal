@@ -16,7 +16,7 @@ window.addEventListener("load", function () {
   const modalReleaseDate = document.getElementById("movieReleaseDate");
   const modalOverview = document.getElementById("movieOverview");
   const modalRatingContainer = document.getElementById("movieRatingContainer");
-  const modalContent = document.querySelector('.modal-content');
+  const modalContent = document.querySelector(".modal-content");
 
   const modalSelectButton = document.getElementById("movieSelectButton");
 
@@ -71,7 +71,8 @@ window.addEventListener("load", function () {
         modalRatingContainer.innerHTML = "";
         // populate movie modal
         modal.style.display = "flex";
-        const baseBkgUrl = 'https://image.tmdb.org/t/p/w1920_and_h800_multi_faces';
+        const baseBkgUrl =
+          "https://image.tmdb.org/t/p/w1920_and_h800_multi_faces";
         modalContent.style.backgroundImage = `url('${baseBkgUrl}${movie.backdrop_path}')`;
         modalTitle.textContent = `${movie.title} (${new Date(movie.release_date).getFullYear()})`;
         modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
