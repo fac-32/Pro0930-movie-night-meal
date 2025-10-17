@@ -14,7 +14,8 @@ window.addEventListener("load", async function () {
 
   pageTitle.textContent = `Guess the "${film}" movie's filming location`;
 
-  let word;
+  let titleCaseWord;
+  let guessWord;
   let isGameOn = true;
   let childNodes;
   let maxGuessLeft = 6;
@@ -22,9 +23,74 @@ window.addEventListener("load", async function () {
   let win = "../images/victory.gif";
   let lose = "../images/lost.gif";
 
+  let lastGameResult = null;
+
+  // Store session activity
+  function saveState() {
+    sessionStorage.setItem(
+      "hangmanState",
+      JSON.stringify({
+        guessWord,
+        isGameOn,
+        maxGuessLeft,
+        imgIndex,
+        childNodesText: Array.from(childNodes).map((n) => n.textContent),
+        lastGameResult,
+        imgSrc: img.src,
+      }),
+    );
+  }
+
+  // Page refresh
+  function loadState() {
+    const stateStr = sessionStorage.getItem("hangmanState");
+    if (!stateStr) return false;
+
+    try {
+      const state = JSON.parse(stateStr);
+
+      guessWord = state.guessWord || "";
+      isGameOn = state.isGameOn !== undefined ? state.isGameOn : true;
+      maxGuessLeft = state.maxGuessLeft || 6;
+      imgIndex = state.imgIndex || 0;
+      lastGameResult = state.lastGameResult || null;
+      img.src = state.imgSrc || "";
+
+      // Setup UI elements
+      userGuess.innerHTML = "";
+      createInputFields();
+      for (let i = 0; i < childNodes.length; i++) {
+        childNodes[i].textContent = state.childNodesText?.[i] || "";
+      }
+
+      loadHangmanImg(imgIndex);
+
+      const keys = Array.from(keyboard.children);
+      keys.forEach((k) =>
+        state.guessedKeys?.includes(k.textContent)
+          ? k.classList.add("disable")
+          : k.classList.remove("disable"),
+      );
+
+      if (!isGameOn && lastGameResult) {
+        showPopup(
+          lastGameResult === "win" ? "You Win!" : "You Lose.",
+          capitalizeEachWord(guessWord),
+          lastGameResult === "win" ? win : lose,
+        );
+      }
+
+      return true;
+    } catch (e) {
+      console.error("Failed to load state:", e);
+      return false;
+    }
+  }
+
   //create input field
+
   function createInputFields() {
-    for (let char of word) {
+    for (let char of guessWord) {
       let charInputDiv = document.createElement("div");
       charInputDiv.classList.add("userGuessLetter");
       userGuess.appendChild(charInputDiv);
@@ -48,58 +114,18 @@ window.addEventListener("load", async function () {
     hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
   }
 
-  // Getting the location
+  // Capitalize First Letter
 
-  gameButton.addEventListener("click", async () => {
-    img.src = "../images/loading-7528_256.gif";
-    const response = await fetch("/get-location", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        input: `Provide one filming location for the movie ${film} from IMDB or Wikidata databases. The location should include both the city and country, and the answer must be no more than three words. If no official filming location exists, give the location where the original art or setting was established. Always prioritize filming locations from reputable sources, and do not respond with 'can't provide' or 'no info available' — instead, give the fallback location.`,
-      }),
-    });
-    if (!response.ok) {
-      throw new Error(`Server error ${response.status}`);
-    }
-    const data = await response.json();
-    const locationStr = data.result; // "tokyo, Japan"
-    const [city, country] = locationStr.split(",").map((s) => s.trim());
-    word = country
-      .match(/[a-zA-Z]+/g)
-      .join(" ")
-      .toLowerCase();
+  function capitalizeEachWord(str) {
+    return str
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
 
-    console.log(word);
+  // Create Virtual Keyboard
 
-    // Getting the Image
-    const params = new URLSearchParams({
-      query: country,
-      per_page: 1,
-      order_by: "relevant",
-    });
-
-    const result = await fetch("/get-image", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ params: params.toString() }),
-    });
-    console.log("This is working");
-    const output = await result.json();
-
-    if (output.results && output.results.length > 0) {
-      img.src = output.results[0].urls.small;
-    } else {
-      img.src = ""; // Or set a default/fallback image
-    }
-
-    createInputFields();
-
-    hints.textContent = "Hint: It's Country, not City/State";
-
-    // Creating Virtual Keyboard
-
+  function initKeyboard() {
     const keys = [
       "q",
       "w",
@@ -128,6 +154,9 @@ window.addEventListener("load", async function () {
       "n",
       "m",
     ];
+
+    keyboard.innerHTML = "";
+
     for (let key of keys) {
       const keyBtn = document.createElement("button");
       keyBtn.classList.add("keys");
@@ -135,35 +164,42 @@ window.addEventListener("load", async function () {
       keyBtn.textContent = key;
       keyboard.appendChild(keyBtn);
     }
+  }
 
+  // Game Reset
+
+  function gameReset(fullReset = false) {
+    isGameOn = true;
+    maxGuessLeft = 6;
+    imgIndex = 0;
+    loadHangmanImg(imgIndex);
+    msgBoard.textContent = "";
+    endGamePopup.classList.add("hide");
+    userGuess.innerHTML = "";
+    createInputFields();
     const keysContainer = document.querySelectorAll(".keys");
-
-    // gameReset
-
-    function gameReset() {
-      isGameOn = true;
-      maxGuessLeft = 6;
-      imgIndex = 0;
-      loadHangmanImg(imgIndex);
-      msgBoard.textContent = "";
-      endGamePopup.classList.add("hide");
-      userGuess.innerHTML = "";
-      createInputFields();
-      keysContainer.forEach((key) => {
-        key.classList.remove("disable");
-      });
+    keysContainer.forEach((key) => {
+      key.classList.remove("disable");
+    });
+    if (fullReset) {
+      img.src = "";
     }
+    lastGameResult = null;
+    saveState();
+  }
 
-    //Game Logic
+  // Game Logic
 
+  function keyboardListener() {
+    const keysContainer = document.querySelectorAll(".keys");
     keysContainer.forEach((key) => {
       key.addEventListener("click", () => {
         if (!isGameOn) return;
 
         let letter = key.textContent;
-        if (word.includes(letter)) {
-          for (let i = 0; i < word.length; i++) {
-            if (word[i] === letter) {
+        if (guessWord.includes(letter)) {
+          for (let i = 0; i < guessWord.length; i++) {
+            if (guessWord[i] === letter) {
               childNodes[i].textContent = letter;
             }
           }
@@ -178,15 +214,96 @@ window.addEventListener("load", async function () {
           (e) => e.textContent !== "",
         );
         if (allRevealed) {
-          showPopup("You Win!", word, win);
+          lastGameResult = "win";
+          saveState();
+          showPopup("You Win!", titleCaseWord, win);
         } else if (maxGuessLeft === 0) {
-          showPopup("You Lose.", word, lose);
+          lastGameResult = "lose";
+          saveState();
+          showPopup("You Lose.", titleCaseWord, lose);
+        } else {
+          saveState();
         }
       });
     });
+  }
 
-    playAgainBtn.addEventListener("click", function () {
-      gameReset();
+  // Getting the location
+
+  gameButton.addEventListener("click", async () => {
+    img.src = "../images/loading-7528_256.gif";
+    const response = await fetch("/get-location", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "gpt-4o",
+        input: `Provide one filming location for the movie ${film} from IMDB or Wikidata databases. The location should include both the city and country, and the answer must be no more than three words. If no official filming location exists, give the location where the original art or setting was established. Always prioritize filming locations from reputable sources, and do not respond with 'can't provide' or 'no info available' — instead, give the fallback location.`,
+      }),
     });
+    if (!response.ok) {
+      throw new Error(`Server error ${response.status}`);
+    }
+    const data = await response.json();
+    const locationStr = data.result; // "tokyo, Japan"
+    const [city, country] = locationStr.split(",").map((s) => s.trim());
+
+    // Getting ONLY letters for guessing
+    let word = country
+      .match(/[a-zA-Z]+/g)
+      .join(" ")
+      .toLowerCase();
+
+    titleCaseWord = capitalizeEachWord(word);
+    guessWord = word.replace(/\s+/g, "");
+
+    console.log(guessWord);
+
+    hints.textContent = "Hint: It's Country/State, but not City";
+
+    // Getting the Image
+    const params = new URLSearchParams({
+      query: country,
+      per_page: 1,
+      order_by: "relevant",
+    });
+
+    const result = await fetch("/get-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ params: params.toString() }),
+    });
+
+    console.log("This is working");
+    const output = await result.json();
+    console.log(output);
+
+    if (output.results && output.results.length > 0) {
+      img.src = output.results[0].urls.small;
+      console.log(img.src);
+    } else {
+      img.src = "";
+    }
+
+    createInputFields();
+    initKeyboard();
+    keyboardListener();
+    gameReset(true);
+    lastGameResult = null;
+    saveState();
+  });
+
+  playAgainBtn.addEventListener("click", function () {
+    if (lastGameResult === "win") {
+      sessionStorage.clear();
+      location.reload();
+    } else if (lastGameResult === "lose") {
+      gameReset(false);
+    }
+  });
+
+  window.addEventListener("popstate", () => {
+    sessionStorage.clear();
+    img.src = "";
+    location.reload();
   });
 });
