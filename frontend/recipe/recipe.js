@@ -86,7 +86,7 @@ movieTitleEL.innerText = movieTitle;
 
 window.addEventListener("DOMContentLoaded", async () => {
   const res = await fetch(
-    `/api/recipe?movie=${encodeURIComponent(movieTitle)}`
+    `/api/recipe?movie=${encodeURIComponent(movieTitle)}`,
   );
   const data = await res.json();
 
