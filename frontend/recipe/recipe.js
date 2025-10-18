@@ -108,6 +108,14 @@ window.addEventListener("DOMContentLoaded", async () => {
   const baseBkg = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
   const secondBkg = `https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path}`;
   applyMoviePalette(baseBkg);
+  if (secondBkg) {
+    document.body.style.setProperty(
+      "--recipe-background-image",
+      `url(${secondBkg})`,
+    );
+  } else {
+    document.body.style.removeProperty("--recipe-background-image");
+  }
 
   const gameBtn = document.createElement("button");
   gameBtn.classList.add("gameBtn");
