@@ -10,7 +10,7 @@ let dishInfo = {
   movie: "",
   dishName: "",
   summary: "",
-  ingrediants: "",
+  ingredients: "",
   instructions: "",
   calories: "",
   healthScore: "",
@@ -46,7 +46,7 @@ export const getRecipe = async (req, res) => {
     {
       "dishName": "string",
       "summary": "string",
-      "ingrediants": "string (formatted list)",
+      "ingredients": "string (formatted list)",
       "instructions": "string (step-by-step)",
       "calories": "number",
       "healthScore": "number"
@@ -72,7 +72,7 @@ export const getRecipe = async (req, res) => {
       movie,
       dishName: cleanMarkdown(data.dishName),
       summary: cleanMarkdown(data.summary),
-      ingrediants: cleanMarkdown(data.ingrediants),
+      ingredients: cleanMarkdown(data.ingredients),
       instructions: cleanMarkdown(data.instructions),
       calories: data.calories || "N/A",
       healthScore: data.healthScore || "N/A",

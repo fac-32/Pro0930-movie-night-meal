@@ -52,7 +52,7 @@ async function fetchPaletteFromLocalStorage({ randomPixels }) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       title: title.trim(),
-      palette: JSON.stringify(randomPixels),
+      randomPixels,
     }),
   });
 
@@ -129,9 +129,9 @@ async function getPixelsFromImageUrl(imageUrl) {
 export async function applyMoviePalette(imageUrl) {
   try {
     const randomPixels = await getPixelsFromImageUrl(imageUrl);
-    console.log(palette);
-
-    const palette = await fetchPaletteFromLocalStorage(randomPixels);
+    const palette = await fetchPaletteFromLocalStorage({
+      randomPixels,
+    });
     setMovieColors(palette);
   } catch (error) {
     console.error("applyMoviePalette failed:", error);

@@ -16,28 +16,32 @@
       />
       <h1>Movie Night Meal</h1>
     </div>
-    <div id="recipeSection">
+    <div id="recipeSection" class="recipeSection">
       <h1 id="movieTitle"></h1>
       <h2 id="dishName"></h2>
       <img id="loadingImg" src="../images/loading-7528_256.gif" />
 
-      <div id="recipe-table-info">
-        <div id="left">
-          <h3 class="hide-title">Ingrediants</h3>
-          <p id="ingrediants"></p>
+      <div id="recipe-table-info" class="recipeCards">
+        <div id="left" class="recipeCard ingredientsSection">
+          <h3 class="hide-title">Ingredients</h3>
+          <ul id="ingredients" class="ingredientsList"></ul>
         </div>
 
-        <div id="right">
+        <div id="right" class="recipeCard summarySection">
           <h3 class="hide-title">Summary</h3>
           <p id="summary"></p>
         </div>
       </div>
-      <h3 class="hide-title">Instructions</h3>
-      <p id="instructions"></p>
-      <p id="healthScore"></p>
-      <p id="calories"></p>
+      <div class="recipeCard instructionSection">
+        <h3 class="hide-title">Instructions</h3>
+        <ol id="instructions" class="instructionList"></ol>
+      </div>
+      <div class="healthSection">
+        <p id="healthScore"></p>
+        <p id="calories"></p>
+      </div>
     </div>
-    <div id="gameSection"></div>
-    <script src="./recipe.js"></script>
+    <div id="gameSection" class="gameSection"></div>
+    <script type="module" src="./recipe.js"></script>
   </body>
 </html>
