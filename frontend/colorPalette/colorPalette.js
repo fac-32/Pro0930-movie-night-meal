@@ -52,7 +52,7 @@ async function fetchPaletteFromLocalStorage({ randomPixels }) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       title: title.trim(),
-      palette: JSON.stringify(randomPixels),
+      randomPixels,
     }),
   });
 
@@ -102,7 +102,7 @@ async function getPixelsFromImageUrl(imageUrl) {
   const uniqueSampleIndexes = new Set();
   const randomPixels = [];
 
-  while (uniqueSampleIndexes.size < Math.min(500, totalPixels)) {
+  while (uniqueSampleIndexes.size < Math.min(100, totalPixels)) {
     const randomIndex = Math.floor(Math.random() * totalPixels);
     if (uniqueSampleIndexes.has(randomIndex)) {
       continue;
@@ -129,8 +129,9 @@ async function getPixelsFromImageUrl(imageUrl) {
 export async function applyMoviePalette(imageUrl) {
   try {
     const randomPixels = await getPixelsFromImageUrl(imageUrl);
-    const palette = await fetchPaletteFromLocalStorage({ randomPixels });
-    console.log(palette);
+    const palette = await fetchPaletteFromLocalStorage({
+      randomPixels,
+    });
     setMovieColors(palette);
   } catch (error) {
     console.error("applyMoviePalette failed:", error);
