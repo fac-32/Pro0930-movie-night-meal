@@ -29,9 +29,15 @@
 }
 
 body {
-  background-color: #2b2d3b;
+  background-color: #05071d;
+  background-image: linear-gradient(to bottom, #0a0d33, black);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+
   display: flex;
   justify-content: center;
+  -webkit-align-items: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
@@ -79,11 +85,17 @@ button:hover {
   gap: 10px;
   padding-left: 5px;
   padding-right: 5px;
+  font-size: clamp(5px, 2.5vw, 18px);
   border-bottom: #ffffff 2px solid;
 }
 
 .headerBanner h1 {
   font-family: "BannerFont", sans-serif;
+}
+
+.headerBanner img {
+  width: clamp(50px, 10vw, 80px);
+  height: auto;
 }
 
 #moviesContainer {
@@ -133,6 +145,8 @@ button:hover {
 .modal {
   display: none;
   position: fixed;
+  justify-content: center;
+  align-items: center;
   z-index: 1;
   left: 0;
   top: 0;
@@ -143,22 +157,41 @@ button:hover {
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   max-height: 80vh;
   overflow-y: auto;
   background-color: var(--banner-bg-color);
+  background-image: url("path/to/your/image.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   color: var(--banner-text-color);
   border: #ffffff 2px solid;
-  margin: 15% auto;
   padding: 20px;
   border-radius: 4px;
   width: 80%;
-  display: flex;
-  flex-direction: row;
+  position: relative;
+  z-index: 0;
+}
+
+.modal-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(1, 9, 34, 0.85);
+  z-index: -1;
 }
 
 .modalMovieInfo {
-  width: 80%;
   display: flex;
+  flex: 1 1 250px;
+  width: 80%;
   flex-direction: column;
   text-align: left;
 }
@@ -169,6 +202,9 @@ button:hover {
 }
 
 .close {
+  position: absolute;
+  right: 14px;
+  top: 8px;
   color: #aaa;
   float: right;
   font-size: 28px;
@@ -184,7 +220,7 @@ button:hover {
 
 .choice-container {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   width: 80vw;
@@ -194,17 +230,18 @@ button:hover {
 }
 
 .choice-card {
+  display: flex;
+  flex: 1 1 200px;
   padding: 6px;
   width: 40vw;
   height: 20vh;
-  display: flex;
   flex-direction: column;
 }
 
 .choice-card h3 {
+  display: flex;
   height: 40%;
   margin: 0;
-  display: flex;
   align-items: center;
   text-align: center;
   justify-content: center;
@@ -214,10 +251,11 @@ button:hover {
 .choice-card-content {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  height: 60%;
+  width: 100%;
 }
 
 .releaseDate-option {
@@ -247,4 +285,30 @@ select {
 #error-message {
   color: red;
   display: none;
+}
+
+.noMoviesContainer {
+  height: 100vh;
+  color: #f5f3f3;
+}
+
+.google_container {
+  position: absolute;
+  right: 14px;
+  top: 5px;
+}
+
+.g_id_signout {
+  color: #030518;
+  cursor: pointer;
+  font-family: "MainFont-Reg", sans-serif;
+  background-color: #dfe3f8;
+  text-align: center;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.userDetails {
+  color: #f5f3f3;
+  font-family: "MainFont-Reg", sans-serif;
 }

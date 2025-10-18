@@ -18,13 +18,11 @@ window.addEventListener("load", function () {
     console.log("User signed out");
   });
 
-  signInBtn.addEventListener("click", () => {
-    google.accounts.id.initialize({
-      client_id:
-        "693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com",
-      callback: handleCredentialResponse,
-      use_fedcm_for_prompt: false,
-    });
+  google.accounts.id.initialize({
+    client_id:
+      "693400949255-0375vn82b9l3j9dqvlkp9se04a2sc5tj.apps.googleusercontent.com",
+    callback: handleCredentialResponse,
+    use_fedcm_for_prompt: false,
   });
 
   google.accounts.id.renderButton(signInBtn, {
@@ -52,6 +50,8 @@ async function handleCredentialResponse(response) {
 
   userContainer.textContent = `Hello, ${responsePayload.given_name}`;
   console.log(`username = ${responsePayload.given_name}`);
+  let email = responsePayload.email;
+  console.log(email);
   userContainer.style.display = "block";
   signInBtn.style.display = "none";
   signOutBtn.style.display = "block";
