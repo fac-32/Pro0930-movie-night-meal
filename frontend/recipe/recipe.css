@@ -42,10 +42,8 @@ body {
   padding: 110px 24px 64px;
   box-sizing: border-box;
   gap: 32px;
-  background-image: linear-gradient(
-      rgba(5, 7, 29, 0.5),
-      rgba(5, 7, 29, 0.88)
-    ),
+  background-image:
+    linear-gradient(rgba(5, 7, 29, 0.5), rgba(5, 7, 29, 0.88)),
     var(--recipe-background-image, none);
   background-size: cover;
   background-repeat: no-repeat;
