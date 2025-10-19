@@ -30,39 +30,53 @@
 
 body {
   background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "MainFont-Reg", sans-serif;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  text-align: center;
-  margin-top: 70px;
-  color: #fffdfd;
+  text-align: left;
+  margin: 0;
+  min-height: 100vh;
+  padding: 110px 24px 64px;
+  box-sizing: border-box;
+  gap: 32px;
+  background-image:
+    linear-gradient(rgba(5, 7, 29, 0.5), rgba(5, 7, 29, 0.88)),
+    var(--recipe-background-image, none);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 h1,
 h2,
 h3 {
   font-family: "MainFont-Bold", sans-serif;
+  color: var(--text-color-accent);
 }
 
 p,
 span {
-  font-family: "MainFont-Reg", sans-serif;
-  font-size: large;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: var(--text-color);
 }
 
 button {
-  background-color: white;
-  font-family: "MainFont-Reg", sans-serif;
-  border-radius: 3px;
-  padding: 3px;
+  background-color: var(--color-primary);
+  color: var(--text-color-accent);
+  font-family: inherit;
+  border-radius: 12px;
+  padding: 12px 24px;
   cursor: pointer;
-  margin: 2px;
-  border: 0px;
-}
-
-button:hover {
-  background-color: #f5f3f3;
+  margin: 8px 0;
+  border: none;
+  box-shadow: 0 12px 24px -12px var(--banner-bg-color);
+  transition: none;
 }
 
 .headerBanner {
@@ -81,7 +95,7 @@ button:hover {
   gap: 10px;
   padding-left: 5px;
   padding-right: 5px;
-  border-bottom: #ffffff 2px solid;
+  border-bottom: var(--text-color-accent) 2px solid;
 }
 
 .headerBanner h1 {
@@ -89,43 +103,132 @@ button:hover {
 }
 
 input {
-  background-color: white;
-  border: #e0dfdf 2px solid;
+  background-color: var(--text-color-accent);
+  border: 2px solid var(--section-bg-color);
   border-radius: 4px;
-  font-family: "MainFont-Reg", sans-serif;
+  font-family: inherit;
   height: 30px;
 }
 
 select {
-  background-color: white;
-  font-family: "MainFont-Reg", sans-serif;
+  background-color: var(--text-color-accent);
+  font-family: inherit;
   height: 30px;
   border-radius: 4px;
-  border: #e0dfdf 2px solid;
+  border: 2px solid var(--section-bg-color);
 }
 
-#recipe-table-info {
-  width: 90%;
-  margin: 0 auto;
+.recipeSection {
+  width: min(960px, 100%);
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 24px;
 }
 
-#left {
-  flex-basis: 45%;
-  align-content: center;
-  text-align: center;
-  font-size: large;
+.recipeSection > h1 {
+  font-size: 2.75rem;
+  margin-bottom: 0;
 }
 
-#right {
-  flex-basis: 45%;
-  text-align: center;
-  align-content: center;
-  font-size: large;
+.recipeSection > h2 {
+  font-size: 1.5rem;
+  margin-top: 8px;
+  color: var(--text-color-accent);
+}
+
+.recipeSection img {
+  max-width: 140px;
+  margin: 16px auto;
+}
+
+.recipeCards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 12px;
+}
+
+.recipeCard {
+  background-color: var(--section-bg-color);
+  padding: 24px;
+  border-radius: 18px;
+  box-shadow: 0 16px 28px -18px var(--banner-bg-color);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .hide-title {
   display: none;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.98rem;
+  color: var(--text-color-accent);
+}
+
+.instructionSection {
+  margin-top: 8px;
+}
+
+.recipeCard p {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recipeCard ol,
+.recipeCard ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.instructionList {
+  margin: 0;
+  padding-left: 28px;
+  list-style: decimal;
+  list-style-position: outside;
+}
+
+.ingredientsList {
+  margin: 0;
+  padding-left: 24px;
+  list-style: disc;
+  list-style-position: outside;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recipeCard li {
+  margin-bottom: 8px;
+}
+
+.healthSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background-color: var(--section-bg-color);
+  padding: 18px;
+  border-radius: 18px;
+  box-shadow: 0 16px 28px -18px var(--banner-bg-color);
+  align-items: flex-start;
+}
+
+.healthSection p {
+  font-family: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: var(--text-color-accent);
+}
+
+.gameBtn {
+  align-self: center;
+  margin-top: 12px;
+}
+
+.gameSection {
+  display: flex;
+  justify-content: center;
 }
