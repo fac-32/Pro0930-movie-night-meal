@@ -44,7 +44,7 @@ window.addEventListener("load", async function () {
   // Load Hangman Image
 
   function loadHangmanImg(imgIndex) {
-    let hangmanImg = `../images/hangman-${imgIndex}.svg`;
+    let hangmanImg = `../images/hangman-${imgIndex}.png`;
     hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
   }
 
