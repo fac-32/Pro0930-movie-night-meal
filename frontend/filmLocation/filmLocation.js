@@ -110,7 +110,7 @@ window.addEventListener("load", async function () {
   // Load Hangman Image
 
   function loadHangmanImg(imgIndex) {
-    let hangmanImg = `../images/hangman-${imgIndex}.svg`;
+    let hangmanImg = `../images/hangman-${imgIndex}.png`;
     hangmanDiv.innerHTML = `<img src=${hangmanImg}>`;
   }
 
@@ -229,7 +229,6 @@ window.addEventListener("load", async function () {
   }
 
   // Getting the location
-
   gameButton.addEventListener("click", async () => {
     img.src = "../images/loading-7528_256.gif";
     const response = await fetch("/get-location", {
@@ -256,7 +255,6 @@ window.addEventListener("load", async function () {
     titleCaseWord = capitalizeEachWord(word);
     guessWord = word.replace(/\s+/g, "");
 
-    console.log(guessWord);
 
     hints.textContent = "Hint: It's Country/State, but not City";
 
@@ -273,13 +271,12 @@ window.addEventListener("load", async function () {
       body: JSON.stringify({ params: params.toString() }),
     });
 
-    console.log("This is working");
+    
     const output = await result.json();
-    console.log(output);
+    
 
     if (output.results && output.results.length > 0) {
       img.src = output.results[0].urls.small;
-      console.log(img.src);
     } else {
       img.src = "";
     }
@@ -287,7 +284,7 @@ window.addEventListener("load", async function () {
     createInputFields();
     initKeyboard();
     keyboardListener();
-    gameReset(true);
+    gameReset(false);
     lastGameResult = null;
     saveState();
   });
@@ -295,7 +292,7 @@ window.addEventListener("load", async function () {
   playAgainBtn.addEventListener("click", function () {
     if (lastGameResult === "win") {
       sessionStorage.clear();
-      location.reload();
+      gameReset(true);
     } else if (lastGameResult === "lose") {
       gameReset(false);
     }
@@ -304,6 +301,6 @@ window.addEventListener("load", async function () {
   window.addEventListener("popstate", () => {
     sessionStorage.clear();
     img.src = "";
-    location.reload();
+    gameReset(true);
   });
 });
