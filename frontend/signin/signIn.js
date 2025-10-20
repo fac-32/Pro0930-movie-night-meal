@@ -31,6 +31,38 @@ window.addEventListener("load", function () {
   });
 });
 
+
+
+async function handleCredentialResponse(response) {
+  const token = response.credential;
+  localStorage.setItem("token", token);
+
+  const validity = await fetch("/auth/google", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token }),
+  });
+
+  const responsePayload = decodeJwtResponse(response.credential);
+
+  const userContainer = document.querySelector(".userDetails");
+  const signInBtn = document.querySelector(".g_id_signin");
+  const signOutBtn = document.querySelector(".g_id_signout");
+
+  userContainer.textContent = `Hello, ${responsePayload.given_name}`;
+  console.log(`username = ${responsePayload.given_name}`);
+  console.log(`email = ${responsePayload.email}`);
+
+  localStorage.setItem("userEmail", responsePayload.email);
+
+  userContainer.style.display = "block";
+  signInBtn.style.display = "none";
+  signOutBtn.style.display = "block";
+}
+
+
+
+/*
 async function handleCredentialResponse(response) {
   const token = response.credential;
   localStorage.setItem("token", token);
@@ -55,7 +87,7 @@ async function handleCredentialResponse(response) {
   userContainer.style.display = "block";
   signInBtn.style.display = "none";
   signOutBtn.style.display = "block";
-}
+}*/
 
 window.handleCredentialResponse = handleCredentialResponse;
 
