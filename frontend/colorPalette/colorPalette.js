@@ -1,9 +1,8 @@
 const REQUIRED_PALETTE_KEYS = [
-  "--color-primary",
   "--bg-color",
-  "--section-bg-color",
-  "--text-color-accent",
   "--text-color",
+  "--text-color-accent",
+  "--section-bg-color",
 ];
 
 const root = document.documentElement;
@@ -40,29 +39,11 @@ const rgbToHsl = (r, g, b) => {
   };
 };
 
-const extractHslComponents = (value) => {
-  if (typeof value !== "string") return null;
-  const match = value.match(
-    /hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/i,
-  );
-  if (!match) return null;
-  const [, h, s, l] = match;
-  return `${Number(h)}, ${Number(s)}%, ${Number(l)}%`;
-};
-
 const setMovieColors = (palette) => {
   REQUIRED_PALETTE_KEYS.forEach((cssVar) => {
     const value = palette?.[cssVar];
     if (typeof value === "string") {
       root.style.setProperty(cssVar, value);
-      if (cssVar === "--bg-color") {
-        const hslComponents = extractHslComponents(value);
-        if (hslComponents) {
-          root.style.setProperty("--bg-color-hsl", hslComponents);
-        } else {
-          root.style.removeProperty("--bg-color-hsl");
-        }
-      }
     }
   });
 };

@@ -72,7 +72,7 @@ button:hover {
 .headerBanner {
   width: 100%;
   height: 70px;
-  background-color: var(--banner-bg-color);
+  background-color: var(--section-bg-color);
   color: var(--banner-text-color);
   text-align: left;
   position: fixed;
