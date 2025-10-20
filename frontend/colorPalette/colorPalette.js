@@ -8,16 +8,70 @@ const REQUIRED_PALETTE_KEYS = [
 
 const root = document.documentElement;
 
+const rgbToHsl = (r, g, b) => {
+  const rNorm = r / 255;
+  const gNorm = g / 255;
+  const bNorm = b / 255;
+
+  const max = Math.max(rNorm, gNorm, bNorm);
+  const min = Math.min(rNorm, gNorm, bNorm);
+  const delta = max - min;
+
+  let h = 0;
+  if (delta !== 0) {
+    if (max === rNorm) {
+      h = ((gNorm - bNorm) / delta) % 6;
+    } else if (max === gNorm) {
+      h = (bNorm - rNorm) / delta + 2;
+    } else {
+      h = (rNorm - gNorm) / delta + 4;
+    }
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+
+  const l = (max + min) / 2;
+  const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  return {
+    h: Math.round(h),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100),
+  };
+};
+
+const extractHslComponents = (value) => {
+  if (typeof value !== "string") return null;
+  const match = value.match(
+    /hsl\(\s*([\d.]+)\s*,\s*([\d.]+)%\s*,\s*([\d.]+)%\s*\)/i,
+  );
+  if (!match) return null;
+  const [, h, s, l] = match;
+  return `${Number(h)}, ${Number(s)}%, ${Number(l)}%`;
+};
+
 const setMovieColors = (palette) => {
   REQUIRED_PALETTE_KEYS.forEach((cssVar) => {
     const value = palette?.[cssVar];
     if (typeof value === "string") {
       root.style.setProperty(cssVar, value);
+      if (cssVar === "--bg-color") {
+        const hslComponents = extractHslComponents(value);
+        if (hslComponents) {
+          root.style.setProperty("--bg-color-hsl", hslComponents);
+        } else {
+          root.style.removeProperty("--bg-color-hsl");
+        }
+      }
     }
   });
 };
 
-const isValidHex = (color) => /^#([0-9A-Fa-f]{6})$/.test(color);
+const isValidHslString = (color) =>
+  typeof color === "string" &&
+  /hsl\(\s*-?\d+(?:\.\d+)?\s*,\s*-?\d+(?:\.\d+)?%\s*,\s*-?\d+(?:\.\d+)?%\s*\)/i.test(
+    color,
+  );
 
 // can be replaces with .modalPoster selector
 function loadImage(src) {
@@ -36,7 +90,7 @@ function loadImage(src) {
   });
 }
 
-async function fetchPaletteFromLocalStorage({ randomPixels }) {
+async function fetchPaletteFromLocalStorage({ sampledPixels }) {
   const apiBase = "http://localhost:3000";
   const storageKey = "filmTitle";
 
@@ -52,7 +106,7 @@ async function fetchPaletteFromLocalStorage({ randomPixels }) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       title: title.trim(),
-      randomPixels,
+      sampledPixels,
     }),
   });
 
@@ -69,8 +123,8 @@ async function fetchPaletteFromLocalStorage({ randomPixels }) {
 
   for (const key of REQUIRED_PALETTE_KEYS) {
     const value = palette[key];
-    if (typeof value !== "string" || !isValidHex(value)) {
-      throw new Error(`Palette is missing a valid hex color for "${key}".`);
+    if (!isValidHslString(value)) {
+      throw new Error(`Palette is missing a valid HSL color for "${key}".`);
     }
   }
 
@@ -99,38 +153,53 @@ async function getPixelsFromImageUrl(imageUrl) {
     throw new Error("Image has invalid dimensions.");
   }
 
-  const uniqueSampleIndexes = new Set();
-  const randomPixels = [];
+  const TARGET_SAMPLE_COUNT = 200;
+  const aspectRatio = width / height;
+  const approxCols = Math.max(1, Math.ceil(Math.sqrt(TARGET_SAMPLE_COUNT * aspectRatio)));
+  const approxRows = Math.max(1, Math.ceil(TARGET_SAMPLE_COUNT / approxCols));
 
-  while (uniqueSampleIndexes.size < Math.min(100, totalPixels)) {
-    const randomIndex = Math.floor(Math.random() * totalPixels);
-    if (uniqueSampleIndexes.has(randomIndex)) {
-      continue;
+  const cellWidth = width / approxCols;
+  const cellHeight = height / approxRows;
+  const sampledPixels = [];
+
+  for (let row = 0; row < approxRows; row += 1) {
+    for (let col = 0; col < approxCols; col += 1) {
+      const centerX = Math.min(
+        width - 1,
+        Math.max(0, Math.floor(col * cellWidth + cellWidth / 2)),
+      );
+      const centerY = Math.min(
+        height - 1,
+        Math.max(0, Math.floor(row * cellHeight + cellHeight / 2)),
+      );
+
+      const { data } = context.getImageData(centerX, centerY, 1, 1);
+      const [r, g, b, a] = data;
+      const { h, s, l } = rgbToHsl(r, g, b);
+
+      sampledPixels.push({
+        x: centerX,
+        y: centerY,
+        h,
+        s,
+        l,
+        a,
+      });
+
+      if (sampledPixels.length >= TARGET_SAMPLE_COUNT) {
+        return sampledPixels;
+      }
     }
-    uniqueSampleIndexes.add(randomIndex);
-
-    const x = randomIndex % width;
-    const y = Math.floor(randomIndex / width);
-    const { data } = context.getImageData(x, y, 1, 1);
-
-    randomPixels.push({
-      x,
-      y,
-      r: data[0],
-      g: data[1],
-      b: data[2],
-      a: data[3],
-    });
   }
 
-  return randomPixels;
+  return sampledPixels;
 }
 
 export async function applyMoviePalette(imageUrl) {
   try {
-    const randomPixels = await getPixelsFromImageUrl(imageUrl);
+    const sampledPixels = await getPixelsFromImageUrl(imageUrl);
     const palette = await fetchPaletteFromLocalStorage({
-      randomPixels,
+      sampledPixels,
     });
     setMovieColors(palette);
   } catch (error) {
