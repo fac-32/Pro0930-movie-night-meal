@@ -255,7 +255,6 @@ window.addEventListener("load", async function () {
     titleCaseWord = capitalizeEachWord(word);
     guessWord = word.replace(/\s+/g, "");
 
-
     hints.textContent = "Hint: It's Country/State, but not City";
 
     // Getting the Image
@@ -271,9 +270,7 @@ window.addEventListener("load", async function () {
       body: JSON.stringify({ params: params.toString() }),
     });
 
-    
     const output = await result.json();
-    
 
     if (output.results && output.results.length > 0) {
       img.src = output.results[0].urls.small;
