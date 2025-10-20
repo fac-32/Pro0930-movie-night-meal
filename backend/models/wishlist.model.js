@@ -15,6 +15,7 @@ const whichlistSchema = new mongoose.Schema(
     timestamps: true, // it has the: createdAt, updatedAt
   },
 );
+whichlistSchema.index({ movieName: 1, userEmail: 1 }, { unique: true }); // prevents adding the same movie twice
 
 const Whishlist = mongoose.model("whishlist", whichlistSchema); //we give singler so Product and mongoose will make it products
 

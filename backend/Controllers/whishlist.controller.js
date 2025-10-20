@@ -23,21 +23,32 @@ export const getMovies = async (req, res) => {
 };
 
 export const addMovie = async (req, res) => {
-  const movie = req.body;
-  if (!movie.movieName || !movie.userEmail) {
+  const { movieName, userEmail } = req.body;
+
+  if (!movieName || !userEmail) {
     return res
       .status(400)
-      .json({ success: false, message: "no movie name and/or email found" });
+      .json({ success: false, message: "No movie name and/or email found" });
   }
 
-  const newMovie = new Whishlist(movie);
-
   try {
+    // 🟡 Check if this movie already exists for this user
+    const existingMovie = await Whishlist.findOne({ movieName, userEmail });
+
+    if (existingMovie) {
+      return res
+        .status(409) // conflict
+        .json({ success: false, message: "Movie already exists in wishlist" });
+    }
+
+    // 🟢 If not, create and save new entry
+    const newMovie = new Whishlist({ movieName, userEmail });
     await newMovie.save();
+
     res.status(201).json({ success: true, data: newMovie });
   } catch (error) {
-    console.log("Error in adding movie: ", error.message);
-    res.status(500).jsonp({ success: false, message: "server error" });
+    console.error("Error in adding movie: ", error.message);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
