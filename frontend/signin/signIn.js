@@ -31,8 +31,6 @@ window.addEventListener("load", function () {
   });
 });
 
-
-
 async function handleCredentialResponse(response) {
   const token = response.credential;
   localStorage.setItem("token", token);
@@ -59,8 +57,6 @@ async function handleCredentialResponse(response) {
   signInBtn.style.display = "none";
   signOutBtn.style.display = "block";
 }
-
-
 
 /*
 async function handleCredentialResponse(response) {
