@@ -19,6 +19,7 @@ window.addEventListener("load", function () {
   const modalContent = document.querySelector(".modal-content");
 
   const modalSelectButton = document.getElementById("movieSelectButton");
+  const wishlistButton = document.getElementById("addToWishlistButton");
 
   var validFilterInput = true;
 
@@ -145,5 +146,45 @@ window.addEventListener("load", function () {
 
   modalSelectButton.addEventListener("click", () => {
     window.location.href = "recipe/recipe.html";
+  });
+
+  wishlistButton.addEventListener("click", async () => {
+    try {
+      const email = localStorage.getItem("userEmail");
+      if (!email) {
+        console.warn("No user logged in. Please sign in first.");
+        alert("Please sign in with Google before adding to wishlist!");
+        return;
+      }
+
+      const movieTitle = localStorage.getItem("filmTitle");
+      if (!movieTitle) {
+        console.warn("No movie selected!");
+        alert("Please select a movie first.");
+        return;
+      }
+
+      const addRes = await fetch("/api/whishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          movieName: movieTitle,
+          userEmail: email,
+        }),
+      });
+
+      if (!addRes.ok) {
+        const errData = await addRes.json();
+        console.error("Failed to add movie:", errData.message);
+        alert("❌ Failed to add movie to wishlist!");
+        return;
+      }
+
+      alert(`✅ "${movieTitle}" added to your wishlist!`);
+    } catch (error) {
+      console.error("Error adding movie to wishlist:", error);
+    }
   });
 });
