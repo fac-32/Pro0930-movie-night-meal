@@ -136,7 +136,10 @@ async function getPixelsFromImageUrl(imageUrl) {
 
   const TARGET_SAMPLE_COUNT = 200;
   const aspectRatio = width / height;
-  const approxCols = Math.max(1, Math.ceil(Math.sqrt(TARGET_SAMPLE_COUNT * aspectRatio)));
+  const approxCols = Math.max(
+    1,
+    Math.ceil(Math.sqrt(TARGET_SAMPLE_COUNT * aspectRatio)),
+  );
   const approxRows = Math.max(1, Math.ceil(TARGET_SAMPLE_COUNT / approxCols));
 
   const cellWidth = width / approxCols;

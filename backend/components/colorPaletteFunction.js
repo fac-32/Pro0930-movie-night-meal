@@ -32,7 +32,7 @@ const normalizeHsl = ({ h, s, l }) => ({
 
 const toCssHsl = ({ h, s, l }) =>
   `hsl(${Math.round(Number(h))}, ${Math.round(Number(s))}%, ${Math.round(
-    Number(l)
+    Number(l),
   )}%)`;
 
 const adjustBgColor = (color) => {
@@ -127,17 +127,17 @@ ${JSON.stringify(sampledPixels)}
         }
         return formatHslKey(h, s, l);
       })
-      .filter(Boolean)
+      .filter(Boolean),
   );
 
   const invalidColors = parsedPalette.filter(
-    (color) => !validColorSet.has(formatHslKey(color.h, color.s, color.l))
+    (color) => !validColorSet.has(formatHslKey(color.h, color.s, color.l)),
   );
 
   if (invalidColors.length > 0) {
     console.error(
       "OpenAI palette contains colors outside the input samples:",
-      invalidColors
+      invalidColors,
     );
     throw new Error("Received colors not present in input samples.");
   }
