@@ -6,6 +6,8 @@ dotenv.config();
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
+export const recipeCache = {};
+
 let dishInfo = {
   movie: "",
   dishName: "",
@@ -26,6 +28,15 @@ function cleanMarkdown(text = "") {
 export const getRecipe = async (req, res) => {
   try {
     const movie = req.query.movie || "The Lord of the Rings";
+    const cacheKey =
+      typeof movie === "string" && movie.trim().length > 0
+        ? movie.trim()
+        : null;
+
+    if (cacheKey && recipeCache[cacheKey]) {
+      console.log(`Serving cached recipe for movie: ${cacheKey}`);
+      return res.json({ ...recipeCache[cacheKey] });
+    }
 
     console.log(`Generating recipe for movie: ${movie}`);
 
@@ -77,6 +88,10 @@ export const getRecipe = async (req, res) => {
       calories: data.calories || "N/A",
       healthScore: data.healthScore || "N/A",
     };
+
+    if (cacheKey) {
+      recipeCache[cacheKey] = { ...dishInfo };
+    }
 
     res.json(dishInfo);
   } catch (error) {

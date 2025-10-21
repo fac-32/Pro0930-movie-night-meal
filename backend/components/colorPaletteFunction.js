@@ -84,6 +84,7 @@ export async function getColorsForMovie(movieTitle, sampledPixels, apiKey) {
   //if need to clear cache - use this line below and import on the top
   //clearColorPaletteCache();
 
+  //CACHING
   // validation of exist palette or new one
   const cacheKey =
     typeof movieTitle === "string" && movieTitle.trim().length > 0
