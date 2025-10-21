@@ -5,19 +5,22 @@ export const getMovies = async (req, res) => {
   const { userEmail } = req.query;
 
   if (!userEmail) {
-    return res.status(400).json({ success: false, message: "User email is required" });
+    return res
+      .status(400)
+      .json({ success: false, message: "User email is required" });
   }
 
   try {
-    const movies = await Whishlist.find({ userEmail }, "movieName movieInfo -_id"); // ✅ include movieInfo
+    const movies = await Whishlist.find(
+      { userEmail },
+      "movieName movieInfo -_id",
+    ); // ✅ include movieInfo
     res.status(200).json(movies);
   } catch (error) {
     console.error("Error fetching movies: ", error.message);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
-
 
 export const addMovie = async (req, res) => {
   const { movieName, userEmail, movieInfo } = req.body;
@@ -47,19 +50,25 @@ export const addMovie = async (req, res) => {
   }
 };
 
-
 export const deleteMovie = async (req, res) => {
   const { movieName, userEmail } = req.body;
 
   if (!movieName || !userEmail) {
-    return res.status(400).json({ success: false, message: "Missing movieName or userEmail" });
+    return res
+      .status(400)
+      .json({ success: false, message: "Missing movieName or userEmail" });
   }
 
   try {
-    const deletedMovie = await Whishlist.findOneAndDelete({ movieName, userEmail });
+    const deletedMovie = await Whishlist.findOneAndDelete({
+      movieName,
+      userEmail,
+    });
 
     if (!deletedMovie) {
-      return res.status(404).json({ success: false, message: "Movie not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Movie not found" });
     }
 
     res.status(200).json({ success: true, message: "Movie deleted" });
@@ -68,6 +77,3 @@ export const deleteMovie = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
-
-
