@@ -5,8 +5,13 @@
 }
 
 :root {
-  --banner-text-color: #ffffff;
-  --banner-bg-color: #05071d;
+  --color-primary: hsl(99, 43%, 40%); /*for buttons and headers*/
+  --bg-color: hsl(249, 74%, 9%); /*background color*/
+  --section-bg-color: hsla(0, 0%, 45%, 0.6); /*bg color for section*/
+  --text-color-accent: hsl(0, 0%, 100%); /*text color for headers*/
+  --text-color: hsl(0, 0%, 100%); /*text color*/
+  --banner-text-color: hsl(0, 0%, 100%);
+  --banner-bg-color: hsl(235, 71%, 7%);
 }
 
 @font-face {
@@ -30,14 +35,29 @@
 }
 
 body {
-  background: #040b24;
-  color: #ffffff;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "MainFont-Reg", sans-serif;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  flex-direction: column;
+  text-align: left;
+  margin: 0;
   min-height: 100vh;
-  padding: 1rem;
-  margin-top: 70px;
+  padding: 110px 24px 64px;
+  box-sizing: border-box;
+  gap: 32px;
+  background-image:
+    linear-gradient(
+      color-mix(in hsl, var(--bg-color) 55%, transparent),
+      color-mix(in hsl, var(--bg-color) 90%, transparent)
+    ),
+    var(--recipe-background-image, none);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 h1,
@@ -140,7 +160,7 @@ span {
   width: 80vw;
   border-radius: 8px;
   padding: 2rem 2.5rem;
-  background: rgb(89, 118, 180);
+  background: rgba(89, 118, 180, 0.6);
   gap: 2rem;
 }
 
@@ -235,7 +255,6 @@ span {
   max-height: 400px;
   padding: 1rem;
   border-radius: 12px;
-  background: #dfe6fc;
   display: flex;
   justify-content: center;
   align-items: center;

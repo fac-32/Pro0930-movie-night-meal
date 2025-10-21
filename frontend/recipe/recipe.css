@@ -1,6 +1,6 @@
 :root {
   --color-primary: hsl(99, 43%, 40%); /*for buttons and headers*/
-  --bg-color: hsl(0, 0%, 31%); /*background color*/
+  --bg-color: hsl(249, 74%, 9%); /*background color*/
   --section-bg-color: hsla(0, 0%, 45%, 0.6); /*bg color for section*/
   --text-color-accent: hsl(0, 0%, 100%); /*text color for headers*/
   --text-color: hsl(0, 0%, 100%); /*text color*/
