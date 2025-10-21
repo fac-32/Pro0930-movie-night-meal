@@ -10,6 +10,15 @@ const dishNameEL = document.getElementById("dishName");
 const caloriesEL = document.getElementById("calories");
 const loadingImgEL = document.getElementById("loadingImg");
 const hiddenTitlesEL = document.getElementsByClassName("hide-title");
+const newRecipeBtn = document.querySelector(".newRecipeBtn");
+const loadingImgInitialSrc =
+  loadingImgEL && loadingImgEL.getAttribute("src")
+    ? loadingImgEL.getAttribute("src")
+    : "";
+
+if (newRecipeBtn) {
+  newRecipeBtn.style.visibility = "hidden";
+}
 
 function parseIngredients(rawIngredients) {
   if (!rawIngredients) return [];
@@ -103,6 +112,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     el.style.display = "block";
   });
 
+  if (newRecipeBtn) {
+    newRecipeBtn.style.visibility = "visible";
+  }
+
   const movie = JSON.parse(localStorage.getItem("movieInfo"));
   console.log(movie);
   const baseBkg = `https://media.themoviedb.org/t/p/w220_and_h330_face${movie.poster_path}`;
@@ -125,5 +138,36 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   gameBtn.addEventListener("click", () => {
     window.location.href = "../filmLocation/filmLocation.html";
+  });
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (!newRecipeBtn) {
+    return;
+  }
+
+  newRecipeBtn.addEventListener("click", async () => {
+    newRecipeBtn.disabled = true;
+    newRecipeBtn.style.visibility = "hidden";
+
+    if (loadingImgEL && loadingImgInitialSrc) {
+      loadingImgEL.src = loadingImgInitialSrc;
+      loadingImgEL.style.display = "block";
+    }
+
+    try {
+      const response = await fetch("/api/recipe/clear", { method: "POST" });
+      if (!response.ok) {
+        throw new Error(`Failed to clear recipe cache: ${response.status}`);
+      }
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      if (loadingImgEL) {
+        loadingImgEL.style.display = "none";
+      }
+      newRecipeBtn.disabled = false;
+      newRecipeBtn.style.visibility = "visible";
+    }
   });
 });
