@@ -182,7 +182,7 @@ window.addEventListener("load", async function () {
       key.classList.remove("disable");
     });
     if (fullReset) {
-      img.removeAttribute('src');;
+      img.removeAttribute("src");
     }
     lastGameResult = null;
     saveState();
@@ -249,8 +249,8 @@ window.addEventListener("load", async function () {
 
     // Remove the markdown code block markers and extra whitespace
     const locationJsonStr = locationStrRaw
-      .replace(/```json\s*/g, '') // Remove opening ```
-      .replace(/```/g, '')         // Remove closing ```
+      .replace(/```json\s*/g, "") // Remove opening ```
+      .replace(/```/g, "") // Remove closing ```
       .trim();
 
     let locationData;
@@ -262,21 +262,19 @@ window.addEventListener("load", async function () {
     }
 
     const locationStr = locationData.result;
-    
 
     let [city, country] = locationStr.split(",").map((s) => s.trim());
-    
 
     if (!country) {
       country = city;
       console.log("Updated Country:", country);
-    } 
-    
+    }
+
     if (country.toLowerCase() === "usa" || country.toLowerCase() === "us") {
       // If the country is USA, we only need the state
       country = city;
       console.log("Updated Country (State):", country);
-    } 
+    }
 
     // Getting ONLY letters for guessing
     let word = country
@@ -312,7 +310,7 @@ window.addEventListener("load", async function () {
     } else if (output.results && output.results.length === 1) {
       img.src = output.results[0].urls.small;
     } else {
-      img.removeAttribute('src');
+      img.removeAttribute("src");
     }
 
     createInputFields();
@@ -335,7 +333,7 @@ window.addEventListener("load", async function () {
 
   window.addEventListener("popstate", () => {
     sessionStorage.clear();
-    img.removeAttribute('src');;
+    img.removeAttribute("src");
     gameReset(true);
   });
 
