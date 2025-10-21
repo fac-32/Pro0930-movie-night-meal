@@ -182,7 +182,7 @@ window.addEventListener("load", async function () {
       key.classList.remove("disable");
     });
     if (fullReset) {
-      img.src = "";
+      img.removeAttribute('src');;
     }
     lastGameResult = null;
     saveState();
@@ -236,15 +236,47 @@ window.addEventListener("load", async function () {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         model: "gpt-4o",
-        input: `Provide one filming location for the movie ${film} from IMDB or Wikidata databases. The location should include both the city and country, and the answer must be no more than three words. If no official filming location exists, give the location where the original art or setting was established. Always prioritize filming locations from reputable sources, and do not respond with 'can't provide' or 'no info available' — instead, give the fallback location.`,
+        input: `Given a movie title ${film}, return the main filming location in the Json format result: State/City, Country (e.g., "Texas, USA" or "London, England"). Use verified filming locations from IMDB or Wikidata. If in the USA, output the State(one of the 59 states of the USA) and Country(USA); otherwise, output City and Country. If no official filming location exists, provide the original art or story setting from reputable sources. Always respond with recognized locations, keeping the answer to max three words. Return JSON format, {result: State/City, Country}.`,
       }),
     });
     if (!response.ok) {
       throw new Error(`Server error ${response.status}`);
     }
+
     const data = await response.json();
-    const locationStr = data.result; // "tokyo, Japan"
-    const [city, country] = locationStr.split(",").map((s) => s.trim());
+
+    const locationStrRaw = data.result; // e.g. '```json\n{"result": "Tokyo, Japan"}\n```
+
+    // Remove the markdown code block markers and extra whitespace
+    const locationJsonStr = locationStrRaw
+      .replace(/```json\s*/g, '') // Remove opening ```
+      .replace(/```/g, '')         // Remove closing ```
+      .trim();
+
+    let locationData;
+    try {
+      locationData = JSON.parse(locationJsonStr); // Parse pure JSON string
+    } catch (e) {
+      console.error("Failed to parse location JSON:", e);
+      throw e;
+    }
+
+    const locationStr = locationData.result;
+    
+
+    let [city, country] = locationStr.split(",").map((s) => s.trim());
+    
+
+    if (!country) {
+      country = city;
+      console.log("Updated Country:", country);
+    } 
+    
+    if (country.toLowerCase() === "usa" || country.toLowerCase() === "us") {
+      // If the country is USA, we only need the state
+      country = city;
+      console.log("Updated Country (State):", country);
+    } 
 
     // Getting ONLY letters for guessing
     let word = country
@@ -272,10 +304,15 @@ window.addEventListener("load", async function () {
 
     const output = await result.json();
 
-    if (output.results && output.results.length > 0) {
+    console.log("Image search results:", output.results);
+
+    if (output.results && output.results.length > 1) {
+      const randomIndex = Math.floor(Math.random() * output.results.length);
+      img.src = output.results[randomIndex].urls.small;
+    } else if (output.results && output.results.length === 1) {
       img.src = output.results[0].urls.small;
     } else {
-      img.src = "";
+      img.removeAttribute('src');
     }
 
     createInputFields();
@@ -290,6 +327,7 @@ window.addEventListener("load", async function () {
     if (lastGameResult === "win") {
       sessionStorage.clear();
       gameReset(true);
+      gameButton.click();
     } else if (lastGameResult === "lose") {
       gameReset(false);
     }
@@ -297,7 +335,7 @@ window.addEventListener("load", async function () {
 
   window.addEventListener("popstate", () => {
     sessionStorage.clear();
-    img.src = "";
+    img.removeAttribute('src');;
     gameReset(true);
   });
 });
