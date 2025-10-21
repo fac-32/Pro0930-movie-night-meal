@@ -22,6 +22,7 @@ window.addEventListener("load", function () {
   const wishlistButton = document.getElementById("addToWishlistButton");
 
   var validFilterInput = true;
+  let addMovie = true;
 
   submitButton.addEventListener("click", async () => {
     if (!validFilterInput) {
@@ -59,16 +60,16 @@ window.addEventListener("load", function () {
     }
   }
 
-  function populateMovies(movies) {
+  async function populateMovies(movies) {
     const moviesContainer = document.getElementById("moviesContainer");
     moviesContainer.innerHTML = "";
     modalRatingContainer.innerHTML = "";
 
-    movies.forEach((movie) => {
+    movies.forEach(async (movie) => {
       const card = document.createElement("button");
       card.classList.add("movie-card");
 
-      card.addEventListener("click", () => {
+      card.addEventListener("click", async () => {
         modalRatingContainer.innerHTML = "";
         // populate movie modal
         modal.style.display = "flex";
@@ -87,6 +88,38 @@ window.addEventListener("load", function () {
 
         localStorage.setItem("filmTitle", movie.title);
         localStorage.setItem("movieInfo", JSON.stringify(movie));
+
+
+        const email = localStorage.getItem("userEmail");
+if (email) {
+  try {
+    const res = await fetch(`/api/whishlist?userEmail=${email}`);
+    if (res.ok) {
+      const movieList = await res.json();
+
+      // ✅ FIX: Properly detect if the movie is already in wishlist
+      const movieExists = movieList.some(
+        (entry) => entry.movieName === movie.title
+      );
+
+      addMovie = !movieExists;
+      wishlistButton.innerHTML = movieExists
+        ? "Remove From Wishlist"
+        : "Add To Wishlist";
+    } else {
+      wishlistButton.innerHTML = "Add To Wishlist";
+      addMovie = true;
+    }
+  } catch (err) {
+    console.error("Error checking wishlist:", err);
+    wishlistButton.innerHTML = "Add To Wishlist";
+    addMovie = true;
+  }
+} else {
+  wishlistButton.innerHTML = "Add To Wishlist";
+  addMovie = true;
+}
+
       });
 
       const img = document.createElement("img");
@@ -115,6 +148,11 @@ window.addEventListener("load", function () {
 
       card.appendChild(info);
       moviesContainer.appendChild(card);
+
+        modalSelectButton.addEventListener("click", () => {
+    window.location.href = "recipe/recipe.html";
+  });
+
     });
   }
 
@@ -144,47 +182,135 @@ window.addEventListener("load", function () {
   startYearSelection.addEventListener("input", validateReleaseYears);
   endYearSelection.addEventListener("input", validateReleaseYears);
 
-  modalSelectButton.addEventListener("click", () => {
-    window.location.href = "recipe/recipe.html";
+  wishlistButton.addEventListener("click", async () => {
+  try {
+    const email = localStorage.getItem("userEmail");
+    const movieTitle = localStorage.getItem("filmTitle");
+    if (!email) return alert("⚠️ Please sign in with Google first!");
+    if (!movieTitle) return alert("⚠️ Please select a movie first!");
+
+    if (addMovie) {
+  const movieInfo = JSON.parse(localStorage.getItem("movieInfo")); // full movie object
+  const addRes = await fetch("/api/whishlist", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ movieName: movieTitle, userEmail: email, movieInfo: JSON.parse(localStorage.getItem("movieInfo")) }),
+
   });
 
-  wishlistButton.addEventListener("click", async () => {
-    try {
-      const email = localStorage.getItem("userEmail");
-      if (!email) {
-        console.warn("No user logged in. Please sign in first.");
-        alert("Please sign in with Google before adding to wishlist!");
-        return;
-      }
+  if (addRes.ok) {
+    alert(`✅ "${movieTitle}" added to your wishlist!`);
+    await populateWishlist();
+  } else if (addRes.status === 409) {
+    alert(`⚠️ "${movieTitle}" is already in your wishlist!`);
+  } else {
+    const errData = await addRes.json();
+    console.error("Failed to add movie:", errData.message);
+    alert("⚠️ Something went wrong while adding.");
+    return;
+  }
 
-      const movieTitle = localStorage.getItem("filmTitle");
-      if (!movieTitle) {
-        console.warn("No movie selected!");
-        alert("Please select a movie first.");
-        return;
-      }
-
-      const addRes = await fetch("/api/whishlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          movieName: movieTitle,
-          userEmail: email,
-        }),
+  wishlistButton.innerHTML = "Remove From Wishlist";
+  addMovie = false;
+}
+ else {
+      // Remove movie
+      const delRes = await fetch("/api/whishlist", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ movieName: movieTitle, userEmail: email }),
       });
 
-      if (!addRes.ok) {
-        const errData = await addRes.json();
-        console.error("Failed to add movie:", errData.message);
-        alert("❌ Failed to add movie to wishlist!");
-        return;
+      if (delRes.ok) {
+        alert(`❌ "${movieTitle}" removed from your wishlist.`);
+        wishlistButton.innerHTML = "Add To Wishlist";
+        addMovie = true;
+        await populateWishlist();
+      } else {
+        const errData = await delRes.json();
+        console.error("Failed to delete movie:", errData.message);
+        alert("⚠️ Failed to remove movie from wishlist.");
       }
-
-      alert(`✅ "${movieTitle}" added to your wishlist!`);
-    } catch (error) {
-      console.error("Error adding movie to wishlist:", error);
     }
-  });
+  } catch (error) {
+    console.error("Error toggling wishlist:", error);
+    alert("⚠️ Error connecting to server.");
+  }
 });
+
+});
+
+async function populateWishlist() {
+  const email = localStorage.getItem("userEmail");
+  const wishlistContainer = document.getElementById("wishlistContainer");
+
+  if (!email) {
+    wishlistContainer.innerHTML = `<div class="noMoviesContainer"><p>Please sign in to see your wishlist.</p></div>`;
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/whishlist?userEmail=${email}`);
+    if (!res.ok) throw new Error("Failed to fetch wishlist");
+
+    const movies = await res.json();
+    wishlistContainer.innerHTML = "";
+
+    if (movies.length === 0) {
+      wishlistContainer.innerHTML = `<div class="noMoviesContainer"><p>Your wishlist is empty</p></div>`;
+      return;
+    }
+
+    movies.forEach((movieEntry) => {
+      const movieInfo = movieEntry.movieInfo;
+      if (!movieInfo) return; // safety check
+
+      const card = document.createElement("button");
+      card.classList.add("movie-card");
+
+      card.addEventListener("click", () => {
+        modalRatingContainer.innerHTML = "";
+        modal.style.display = "flex";
+
+        modalContent.style.backgroundImage = `url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${movieInfo.backdrop_path}')`;
+        modalTitle.textContent = `${movieInfo.title} (${new Date(movieInfo.release_date).getFullYear()})`;
+        modalPoster.src = `https://media.themoviedb.org/t/p/w220_and_h330_face${movieInfo.poster_path}`;
+        modalPoster.onerror = () => { modalPoster.src = "./images/movie_poster_placeholder.png"; };
+        modalOverview.textContent = movieInfo.overview;
+        modalReleaseDate.textContent = `Release Date: ${new Date(movieInfo.release_date).toLocaleDateString()}`;
+        populateRatingStars(modalRatingContainer, movieInfo.vote_average);
+
+        localStorage.setItem("filmTitle", movieInfo.title);
+        localStorage.setItem("movieInfo", JSON.stringify(movieInfo));
+      });
+
+      // Poster
+      const img = document.createElement("img");
+      img.src = movieInfo.poster_path
+        ? `https://media.themoviedb.org/t/p/w220_and_h330_face${movieInfo.poster_path}`
+        : "./images/movie_poster_placeholder.png";
+      img.alt = movieInfo.title;
+      card.appendChild(img);
+
+      // Movie info
+      const info = document.createElement("div");
+      info.classList.add("movie-info");
+
+      const nameEl = document.createElement("h3");
+      nameEl.textContent = movieInfo.title;
+      const dateEl = document.createElement("p");
+      const options = { year: "numeric", month: "long", day: "2-digit" };
+      dateEl.textContent = new Date(movieInfo.release_date).toLocaleDateString("en-US", options);
+
+      info.appendChild(nameEl);
+      info.appendChild(dateEl);
+
+      card.appendChild(info);
+      wishlistContainer.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Error loading wishlist:", err);
+    wishlistContainer.innerHTML = `<div class="noMoviesContainer"><p>Failed to load wishlist.</p></div>`;
+  }
+}
+

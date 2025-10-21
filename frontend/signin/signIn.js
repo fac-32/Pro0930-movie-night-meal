@@ -1,3 +1,4 @@
+
 window.addEventListener("load", function () {
   const signInBtn = document.querySelector(".g_id_signin");
   const signOutBtn = document.querySelector(".g_id_signout");
@@ -56,6 +57,7 @@ async function handleCredentialResponse(response) {
   userContainer.style.display = "block";
   signInBtn.style.display = "none";
   signOutBtn.style.display = "block";
+
 }
 
 /*
