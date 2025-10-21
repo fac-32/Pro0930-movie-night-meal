@@ -6,6 +6,35 @@ const REQUIRED_PALETTE_KEYS = [
 ];
 
 const root = document.documentElement;
+const TMDB_IMAGE_HOSTS = new Set(["image.tmdb.org", "media.themoviedb.org"]);
+
+const buildPaletteImageUrl = (inputUrl) => {
+  console.debug("buildPaletteImageUrl input", inputUrl);
+  if (!inputUrl || typeof inputUrl !== "string") {
+    return inputUrl;
+  }
+
+  try {
+    const parsed = new URL(inputUrl, window.location.href);
+    if (parsed.origin === window.location.origin) {
+      console.debug("buildPaletteImageUrl local origin", parsed.href);
+      return parsed.href;
+    }
+
+    if (parsed.protocol === "https:" && TMDB_IMAGE_HOSTS.has(parsed.hostname)) {
+      const proxyUrl = `/api/palette/image?url=${encodeURIComponent(parsed.href)}`;
+      console.debug("buildPaletteImageUrl proxy", proxyUrl);
+      return proxyUrl;
+    }
+
+    console.warn("Unexpected palette image origin:", parsed.origin);
+  } catch (error) {
+    console.warn("Failed to parse image URL for palette:", error);
+  }
+
+  console.debug("buildPaletteImageUrl passthrough", inputUrl);
+  return inputUrl;
+};
 
 const rgbToHsl = (r, g, b) => {
   const rNorm = r / 255;
@@ -180,7 +209,8 @@ async function getPixelsFromImageUrl(imageUrl) {
 
 export async function applyMoviePalette(imageUrl) {
   try {
-    const sampledPixels = await getPixelsFromImageUrl(imageUrl);
+    const paletteSourceUrl = buildPaletteImageUrl(imageUrl);
+    const sampledPixels = await getPixelsFromImageUrl(paletteSourceUrl);
     const palette = await fetchPaletteFromLocalStorage({
       sampledPixels,
     });
