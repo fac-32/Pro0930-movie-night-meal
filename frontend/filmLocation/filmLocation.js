@@ -302,15 +302,14 @@ window.addEventListener("load", async function () {
   });
 
   const movie = JSON.parse(localStorage.getItem("movieInfo"));
-    console.log(movie);
-    const secondBkg = `https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path}`;
-    if (secondBkg) {
-      document.body.style.setProperty(
-        "--recipe-background-image",
-        `url(${secondBkg})`,
-      );
-    } else {
-      document.body.style.removeProperty("--recipe-background-image");
-    }
-
+  console.log(movie);
+  const secondBkg = `https://image.tmdb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path}`;
+  if (secondBkg) {
+    document.body.style.setProperty(
+      "--recipe-background-image",
+      `url(${secondBkg})`,
+    );
+  } else {
+    document.body.style.removeProperty("--recipe-background-image");
+  }
 });
