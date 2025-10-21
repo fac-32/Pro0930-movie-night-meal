@@ -1,8 +1,11 @@
 import OpenAI from "openai";
 import { zodTextFormat } from "openai/helpers/zod";
 import { z } from "zod";
+//import { clearColorPaletteCache } from "../components/clearColorPaletteCache.js";
 
 const MODEL = "gpt-4o-2024-08-06";
+
+export const cachingPalette = {};
 
 const HslColor = z.object({
   h: z.number().finite().min(0).max(360),
@@ -77,6 +80,17 @@ const CSS_VARIABLE_KEYS = ["--bg-color", "--text-color"];
 
 export async function getColorsForMovie(movieTitle, sampledPixels, apiKey) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
+
+  // validation of exist palette or new one
+  const cacheKey =
+    typeof movieTitle === "string" && movieTitle.trim().length > 0
+      ? movieTitle.trim()
+      : null;
+  if (cacheKey && cachingPalette[cacheKey]) {
+    const cached = cachingPalette[cacheKey];
+    //console.log(`use existing palette for ${cacheKey}`);
+    return { palette: { ...cached.palette } };
+  }
 
   const client = new OpenAI({ apiKey });
 
@@ -176,5 +190,12 @@ ${JSON.stringify(sampledPixels)}
     return acc;
   }, {});
 
-  return { palette };
+  //create new value in object to cachcing palette for furher req
+  const result = { palette };
+  if (cacheKey) {
+    cachingPalette[cacheKey] = { palette: { ...palette } };
+    //console.log(`create new palette for ${cacheKey}`);
+  }
+  //clearColorPaletteCache();
+  return result;
 }

@@ -27,6 +27,3 @@ paletteRouter.post("/", async (req, res) => {
 });
 
 export default paletteRouter;
-
-// /api/palette/hello
-//paletteRouter.post("/hello", async (req, res) => {})
