@@ -3,8 +3,9 @@
   --bg-color: hsl(0, 0%, 31%); /*background color*/
   --section-bg-color: hsl(0, 0%, 45%); /*bg color for section*/
   --text-color-accent: hsl(0, 0%, 100%); /*text color for headers*/
-  --text-color: hsl(0, 0%, 100%); /*text color*/
-  --banner-text-color: hsl(0, 0%, 100%);
+  --text-color: hsl(240, 9%, 83%); /*text color*/
+  --banner-text-color: hsl(235, 62%, 57%);
+  --choice-bg-color: hsl(235, 53%, 26%);
   --banner-bg-color: hsl(235, 71%, 7%);
 }
 
@@ -29,8 +30,12 @@
 }
 
 body {
-  background-color: #05071d;
-  background-image: linear-gradient(to bottom, #0a0d33, black);
+  background-color: var(--choice-bg-color);
+  background-image: linear-gradient(
+    to bottom,
+    hsl(from var(--banner-bg-color) h s l / 0.6) 0%,
+    hsl(from var(--banner-bg-color) h s l / 1) 100%
+  );
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -51,7 +56,8 @@ h3 {
 }
 
 p,
-span {
+span,
+div {
   font-family: "MainFont-Reg", sans-serif;
 }
 
@@ -61,18 +67,36 @@ button {
   border-radius: 3px;
   padding: 3px;
   cursor: pointer;
-  margin: 2px;
+  margin: 10px;
   border: 0px;
 }
 
-button:hover {
-  background-color: #f5f3f3;
+.btn-search:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--banner-text-color),
+    transparent 40%
+  );
+}
+
+.btn-search {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2.5rem;
+  min-width: 150px;
+  font-size: 1.1rem;
+  background-color: var(--banner-text-color);
+  color: var(--text-color);
+  border-radius: 10px;
+  border: 1px solid;
 }
 
 .headerBanner {
   width: 100%;
   height: 70px;
-  background-color: var(--section-bg-color);
+  background-color: var(--banner-bg-color);
   color: var(--banner-text-color);
   text-align: left;
   position: fixed;
@@ -86,7 +110,8 @@ button:hover {
   padding-left: 5px;
   padding-right: 5px;
   font-size: clamp(5px, 2.5vw, 18px);
-  border-bottom: #ffffff 2px solid;
+  border-bottom: var(--banner-text-color) 2px solid;
+  margin-bottom: 10px;
 }
 
 .headerBanner h1 {
@@ -168,7 +193,7 @@ button:hover {
   background-position: center;
   background-repeat: no-repeat;
 
-  color: var(--banner-text-color);
+  color: var(--text-color);
   border: #ffffff 2px solid;
   padding: 20px;
   border-radius: 4px;
@@ -224,13 +249,15 @@ button:hover {
   justify-content: center;
   align-items: center;
   width: 80vw;
-  background-color: #e0dfdf;
+  min-height: 100%;
+  background-color: var(--choice-bg-color);
+  color: var(--text-color);
   border-radius: 4px;
-  margin: 4px;
+  margin: 20px;
 }
 
 .choice-card {
-  display: flex;
+  font-size: 20px;
   flex: 1 1 200px;
   padding: 6px;
   width: 40vw;
@@ -244,15 +271,16 @@ button:hover {
   margin: 0;
   align-items: center;
   text-align: center;
-  justify-content: center;
+  justify-content: end;
   border-bottom: #fffdfd 2px solid;
 }
 
 .choice-card-content {
+  margin-top: 16px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   gap: 10px;
   width: 100%;
@@ -267,19 +295,30 @@ button:hover {
 }
 
 input {
-  background-color: white;
-  border: #e0dfdf 2px solid;
-  border-radius: 4px;
+  background-color: hsl(234, 28%, 67%);
+  color: var(--banner-bg-color);
   font-family: "MainFont-Reg", sans-serif;
-  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: 2px solid white;
 }
 
 select {
-  background-color: white;
+  background-color: hsl(234, 28%, 67%);
+  color: var(--banner-bg-color);
   font-family: "MainFont-Reg", sans-serif;
-  height: 30px;
-  border-radius: 4px;
-  border: #e0dfdf 2px solid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.5rem;
+  min-width: 150px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  border: 2px solid white;
 }
 
 #error-message {
