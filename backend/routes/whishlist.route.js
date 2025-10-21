@@ -10,6 +10,6 @@ const router = express.Router();
 
 router.get("/", getMovies);
 router.post("/", addMovie);
-router.delete("/:id", deleteMovie);
+router.delete("/", deleteMovie);
 
 export default router;
