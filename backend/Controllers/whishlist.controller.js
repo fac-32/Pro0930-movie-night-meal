@@ -16,7 +16,6 @@ export const getMovies = async (req, res) => {
   }
 };
 
-
 export const addMovie = async (req, res) => {
   const { movieName, userEmail, movieInfo } = req.body;
 
@@ -44,7 +43,6 @@ export const addMovie = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
 
 export const deleteMovie = async (req, res) => {
   const { movieName, userEmail } = req.body;
@@ -75,4 +73,3 @@ export const deleteMovie = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
-

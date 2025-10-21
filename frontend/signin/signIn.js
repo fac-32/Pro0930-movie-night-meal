@@ -1,5 +1,3 @@
-
-
 window.addEventListener("load", function () {
   const signInBtn = document.querySelector(".g_id_signin");
   const signOutBtn = document.querySelector(".g_id_signout");
@@ -111,27 +109,21 @@ function decodeJwtResponse(token) {
 // WISHLIST //
 
 async function loadWishlist() {
-
   const email = localStorage.getItem("userEmail");
   const wishlistContainer = document.getElementById("wishlistMoviesContainer");
   wishlistContainer.innerHTML = ""; // clear it first
 
   if (!email) {
-    wishlistContainer.innerHTML =
-      `<p class="emptyWishlistMsg">Please sign in to view your wishlist.</p>`;
+    wishlistContainer.innerHTML = `<p class="emptyWishlistMsg">Please sign in to view your wishlist.</p>`;
     return;
   }
-  
-  try
-  {
-    const res = await fetch(`/api/whishlist?userEmail=${email}`);
-      if (res.ok) {
-          const movieList = await res.json();
-          const movieExists = movieList.includes(movie.title);
-          console.log(movieList);
-      }
-  }catch(error)
-  {
 
-  }
+  try {
+    const res = await fetch(`/api/whishlist?userEmail=${email}`);
+    if (res.ok) {
+      const movieList = await res.json();
+      const movieExists = movieList.includes(movie.title);
+      console.log(movieList);
+    }
+  } catch (error) {}
 }

@@ -10,11 +10,10 @@ const whichlistSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    movieInfo: 
-    {
+    movieInfo: {
       type: Object,
       required: false,
-    }
+    },
   },
   {
     timestamps: true, // it has the: createdAt, updatedAt

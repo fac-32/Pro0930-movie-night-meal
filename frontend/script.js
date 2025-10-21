@@ -24,7 +24,6 @@ window.addEventListener("load", function () {
   var validFilterInput = true;
   let addMovie = true;
 
-
   submitButton.addEventListener("click", async () => {
     if (!validFilterInput) {
       return;
@@ -71,30 +70,28 @@ window.addEventListener("load", function () {
       card.classList.add("movie-card");
 
       card.addEventListener("click", async () => {
-
-      
-      const email = localStorage.getItem("userEmail");
-      if (email) {
-      try {
-        const res = await fetch(`/api/whishlist?userEmail=${email}`);
-      if (res.ok) {
-          const movieList = await res.json();
-          const movieExists = movieList.includes(movie.title);
-          addMovie = !movieExists;
-          wishlistButton.innerHTML = movieExists
-            ? "Remove From Wishlist"
-            : "Add To Wishlist";  
-      } else {
-        console.warn("Couldn't fetch wishlist for this user");
-        wishlistButton.innerHTML = "Add To Wishlist";
-      }
-    } catch (error) {
-      console.error("Error checking wishlist:", error);
-      wishlistButton.innerHTML = "Add To Wishlist";
-    }
-  } else {
-    wishlistButton.innerHTML = "Add To Wishlist";
-  }
+        const email = localStorage.getItem("userEmail");
+        if (email) {
+          try {
+            const res = await fetch(`/api/whishlist?userEmail=${email}`);
+            if (res.ok) {
+              const movieList = await res.json();
+              const movieExists = movieList.includes(movie.title);
+              addMovie = !movieExists;
+              wishlistButton.innerHTML = movieExists
+                ? "Remove From Wishlist"
+                : "Add To Wishlist";
+            } else {
+              console.warn("Couldn't fetch wishlist for this user");
+              wishlistButton.innerHTML = "Add To Wishlist";
+            }
+          } catch (error) {
+            console.error("Error checking wishlist:", error);
+            wishlistButton.innerHTML = "Add To Wishlist";
+          }
+        } else {
+          wishlistButton.innerHTML = "Add To Wishlist";
+        }
 
         modalRatingContainer.innerHTML = "";
         // populate movie modal
@@ -175,68 +172,67 @@ window.addEventListener("load", function () {
     window.location.href = "recipe/recipe.html";
   });
 
- wishlistButton.addEventListener("click", async () => {
-  try {
-    const email = localStorage.getItem("userEmail");
-    if (!email) {
-      alert("⚠️ Please sign in with Google first!");
-      return;
-    }
-
-    const movieTitle = localStorage.getItem("filmTitle");
-    if (!movieTitle) {
-      alert("⚠️ Please select a movie first!");
-      return;
-    }
-
-    //  Add movie
-    if (addMovie) {
-  const movieInfo = JSON.parse(localStorage.getItem("movieInfo") || "{}");
-
-  const addRes = await fetch("/api/whishlist", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      movieName: movieTitle,
-      userEmail: email,
-      movieInfo: movieInfo,
-    }),
-  });
-
-      if (addRes.ok) {
-        alert(`✅ "${movieTitle}" added to your wishlist!`);
-        wishlistButton.innerHTML = "Remove From Wishlist";
-        addMovie = false; 
+  wishlistButton.addEventListener("click", async () => {
+    try {
+      const email = localStorage.getItem("userEmail");
+      if (!email) {
+        alert("⚠️ Please sign in with Google first!");
         return;
-      } else {
-        const errData = await addRes.json();
-        console.error("Failed to add movie:", errData.message);
-        alert("⚠️ Something went wrong while adding.");
       }
-    } 
-    // Remove movie
-    else {
-      const delRes = await fetch("/api/whishlist", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          movieName: movieTitle,
-          userEmail: email,
-        }),
-      });
 
-      if (delRes.ok) {
-        alert(`❌ "${movieTitle}" removed from your wishlist.`);
-        wishlistButton.innerHTML = "Add To Wishlist";
-        addMovie = true; 
-      } else {
-        alert("⚠️ Failed to remove movie from wishlist.");
+      const movieTitle = localStorage.getItem("filmTitle");
+      if (!movieTitle) {
+        alert("⚠️ Please select a movie first!");
+        return;
       }
+
+      //  Add movie
+      if (addMovie) {
+        const movieInfo = JSON.parse(localStorage.getItem("movieInfo") || "{}");
+
+        const addRes = await fetch("/api/whishlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            movieName: movieTitle,
+            userEmail: email,
+            movieInfo: movieInfo,
+          }),
+        });
+
+        if (addRes.ok) {
+          alert(`✅ "${movieTitle}" added to your wishlist!`);
+          wishlistButton.innerHTML = "Remove From Wishlist";
+          addMovie = false;
+          return;
+        } else {
+          const errData = await addRes.json();
+          console.error("Failed to add movie:", errData.message);
+          alert("⚠️ Something went wrong while adding.");
+        }
+      }
+      // Remove movie
+      else {
+        const delRes = await fetch("/api/whishlist", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            movieName: movieTitle,
+            userEmail: email,
+          }),
+        });
+
+        if (delRes.ok) {
+          alert(`❌ "${movieTitle}" removed from your wishlist.`);
+          wishlistButton.innerHTML = "Add To Wishlist";
+          addMovie = true;
+        } else {
+          alert("⚠️ Failed to remove movie from wishlist.");
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling wishlist:", error);
+      alert("⚠️ Error connecting to server.");
     }
-  } catch (error) {
-    console.error("Error toggling wishlist:", error);
-    alert("⚠️ Error connecting to server.");
-  }
+  });
 });
-});
-
