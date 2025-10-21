@@ -71,8 +71,7 @@ function loadImage(src) {
   });
 }
 
-async function fetchPaletteFromLocalStorage({ sampledPixels }) {
-  const apiBase = "http://localhost:3000";
+async function fetchPaletteFromLocalStorage({ sampledPixels }) {;
   const storageKey = "filmTitle";
 
   const title = localStorage.getItem(storageKey);
@@ -82,7 +81,7 @@ async function fetchPaletteFromLocalStorage({ sampledPixels }) {
     );
   }
 
-  const res = await fetch(`${apiBase}/api/palette`, {
+  const res = await fetch("/api/palette", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
