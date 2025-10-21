@@ -71,7 +71,7 @@ function loadImage(src) {
   });
 }
 
-async function fetchPaletteFromLocalStorage({ sampledPixels }) {;
+async function fetchPaletteFromLocalStorage({ sampledPixels }) {
   const storageKey = "filmTitle";
 
   const title = localStorage.getItem(storageKey);
