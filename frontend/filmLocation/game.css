@@ -67,11 +67,22 @@ span {
   gap: 10px;
   padding-left: 5px;
   padding-right: 5px;
-  border-bottom: #ffffff 2px solid;
+  font-size: clamp(5px, 2.5vw, 18px);
+  border-bottom: var(--banner-text-color) 2px solid;
+  margin-bottom: 10px;
 }
 
 .headerBanner h1 {
   font-family: "BannerFont", sans-serif;
+}
+
+.headerBanner a {
+  all: unset;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
 .gameBtn {
