@@ -1,7 +1,4 @@
-const ALLOWED_IMAGE_HOSTS = new Set([
-  "image.tmdb.org",
-  "media.themoviedb.org",
-]);
+const ALLOWED_IMAGE_HOSTS = new Set(["image.tmdb.org", "media.themoviedb.org"]);
 
 const DEFAULT_CONTENT_TYPE = "image/jpeg";
 
@@ -9,7 +6,8 @@ const isTrustedImageUrl = (value) => {
   try {
     const url = new URL(value);
     return (
-      url.protocol === "https:" && ALLOWED_IMAGE_HOSTS.has(url.hostname.toLowerCase())
+      url.protocol === "https:" &&
+      ALLOWED_IMAGE_HOSTS.has(url.hostname.toLowerCase())
     );
   } catch {
     return false;
