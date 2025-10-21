@@ -356,3 +356,14 @@ select {
   color: #f5f3f3;
   font-family: "MainFont-Reg", sans-serif;
 }
+
+#wishlistContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.wishlist-section h2 {
+  margin-bottom: 10px;
+}

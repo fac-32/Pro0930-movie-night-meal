@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Whishlist from "../models/wishlist.model.js";
 
 export const getMovies = async (req, res) => {
-  const { userEmail } = req.query; // get userEmail from query string
+  const { userEmail } = req.query;
 
   if (!userEmail) {
     return res
@@ -11,11 +11,11 @@ export const getMovies = async (req, res) => {
   }
 
   try {
-    const movies = await Whishlist.find({ userEmail }, "movieName -_id");
-
-    const movieNames = movies.map((movie) => movie.movieName);
-
-    res.status(200).json(movieNames);
+    const movies = await Whishlist.find(
+      { userEmail },
+      "movieName movieInfo -_id",
+    ); // ✅ include movieInfo
+    res.status(200).json(movies);
   } catch (error) {
     console.error("Error fetching movies: ", error.message);
     res.status(500).json({ success: false, message: "Server error" });
@@ -23,7 +23,7 @@ export const getMovies = async (req, res) => {
 };
 
 export const addMovie = async (req, res) => {
-  const { movieName, userEmail } = req.body;
+  const { movieName, userEmail, movieInfo } = req.body;
 
   if (!movieName || !userEmail) {
     return res
@@ -32,17 +32,15 @@ export const addMovie = async (req, res) => {
   }
 
   try {
-    // 🟡 Check if this movie already exists for this user
     const existingMovie = await Whishlist.findOne({ movieName, userEmail });
 
     if (existingMovie) {
       return res
-        .status(409) // conflict
+        .status(409)
         .json({ success: false, message: "Movie already exists in wishlist" });
     }
 
-    // 🟢 If not, create and save new entry
-    const newMovie = new Whishlist({ movieName, userEmail });
+    const newMovie = new Whishlist({ movieName, userEmail, movieInfo });
     await newMovie.save();
 
     res.status(201).json({ success: true, data: newMovie });
@@ -53,30 +51,29 @@ export const addMovie = async (req, res) => {
 };
 
 export const deleteMovie = async (req, res) => {
-  const { id } = req.params;
-  const { userEmail } = req.query;
+  const { movieName, userEmail } = req.body;
 
-  if (!mongoose.Types.ObjectId.isValid(id) || userEmail === "") {
+  if (!movieName || !userEmail) {
     return res
-      .status(404)
-      .json({ success: false, message: "invalid movie ID and/or email" });
+      .status(400)
+      .json({ success: false, message: "Missing movieName or userEmail" });
   }
 
   try {
     const deletedMovie = await Whishlist.findOneAndDelete({
-      _id: id,
-      userEmail: userEmail,
+      movieName,
+      userEmail,
     });
 
     if (!deletedMovie) {
       return res
         .status(404)
-        .json({ success: false, message: "Movie not found for this user" });
+        .json({ success: false, message: "Movie not found" });
     }
 
     res.status(200).json({ success: true, message: "Movie deleted" });
-  } catch (error) {
-    console.log("error in deleting Movie: ", error.message);
-    res.status(500).json({ success: false, message: "server error" });
+  } catch (err) {
+    console.error("Error deleting movie:", err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
