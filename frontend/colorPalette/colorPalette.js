@@ -5,7 +5,38 @@ const REQUIRED_PALETTE_KEYS = [
   "--section-bg-color",
 ];
 
+const PALETTE_STORAGE_KEY = "moviePalette";
+
 const root = document.documentElement;
+const TMDB_IMAGE_HOSTS = new Set(["image.tmdb.org", "media.themoviedb.org"]);
+
+const buildPaletteImageUrl = (inputUrl) => {
+  console.debug("buildPaletteImageUrl input", inputUrl);
+  if (!inputUrl || typeof inputUrl !== "string") {
+    return inputUrl;
+  }
+
+  try {
+    const parsed = new URL(inputUrl, window.location.href);
+    if (parsed.origin === window.location.origin) {
+      console.debug("buildPaletteImageUrl local origin", parsed.href);
+      return parsed.href;
+    }
+
+    if (parsed.protocol === "https:" && TMDB_IMAGE_HOSTS.has(parsed.hostname)) {
+      const proxyUrl = `/api/palette/image?url=${encodeURIComponent(parsed.href)}`;
+      console.debug("buildPaletteImageUrl proxy", proxyUrl);
+      return proxyUrl;
+    }
+
+    console.warn("Unexpected palette image origin:", parsed.origin);
+  } catch (error) {
+    console.warn("Failed to parse image URL for palette:", error);
+  }
+
+  console.debug("buildPaletteImageUrl passthrough", inputUrl);
+  return inputUrl;
+};
 
 const rgbToHsl = (r, g, b) => {
   const rNorm = r / 255;
@@ -54,6 +85,42 @@ const isValidHslString = (color) =>
     color,
   );
 
+const isValidPaletteShape = (palette) =>
+  palette &&
+  typeof palette === "object" &&
+  REQUIRED_PALETTE_KEYS.every((key) => isValidHslString(palette[key]));
+
+const savePaletteToLocalStorage = (palette) => {
+  if (!isValidPaletteShape(palette)) {
+    return;
+  }
+
+  try {
+    localStorage.setItem(PALETTE_STORAGE_KEY, JSON.stringify(palette));
+  } catch (error) {
+    console.warn("Failed to cache palette in localStorage:", error);
+  }
+};
+
+const loadPaletteFromLocalStorage = () => {
+  try {
+    const raw = localStorage.getItem(PALETTE_STORAGE_KEY);
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw);
+    if (!isValidPaletteShape(parsed)) {
+      return null;
+    }
+
+    return parsed;
+  } catch (error) {
+    console.warn("Failed to read palette from localStorage:", error);
+    return null;
+  }
+};
+
 // can be replaces with .modalPoster selector
 function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -72,7 +139,6 @@ function loadImage(src) {
 }
 
 async function fetchPaletteFromLocalStorage({ sampledPixels }) {
-  const apiBase = "http://localhost:3000";
   const storageKey = "filmTitle";
 
   const title = localStorage.getItem(storageKey);
@@ -82,7 +148,7 @@ async function fetchPaletteFromLocalStorage({ sampledPixels }) {
     );
   }
 
-  const res = await fetch(`${apiBase}/api/palette`, {
+  const res = await fetch("/api/palette", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -181,13 +247,26 @@ async function getPixelsFromImageUrl(imageUrl) {
 
 export async function applyMoviePalette(imageUrl) {
   try {
-    const sampledPixels = await getPixelsFromImageUrl(imageUrl);
+    const paletteSourceUrl = buildPaletteImageUrl(imageUrl);
+    const sampledPixels = await getPixelsFromImageUrl(paletteSourceUrl);
     const palette = await fetchPaletteFromLocalStorage({
       sampledPixels,
     });
     setMovieColors(palette);
+    savePaletteToLocalStorage(palette);
+    return palette;
   } catch (error) {
     console.error("applyMoviePalette failed:", error);
     return [];
   }
+}
+
+export function applyStoredPalette() {
+  const cached = loadPaletteFromLocalStorage();
+  if (!cached) {
+    return false;
+  }
+
+  setMovieColors(cached);
+  return true;
 }

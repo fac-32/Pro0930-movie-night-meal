@@ -1,6 +1,7 @@
 // server/routes/palette.js
 import { Router } from "express";
 import { getColorsForMovie } from "../components/colorPaletteFunction.js";
+import { proxyMovieImage } from "../Controllers/getImgURL.js";
 
 const paletteRouter = Router();
 
@@ -26,7 +27,7 @@ paletteRouter.post("/", async (req, res) => {
   }
 });
 
-export default paletteRouter;
+// GET /api/palette/image?url=<encoded_tmdb_url>
+paletteRouter.get("/image", proxyMovieImage);
 
-// /api/palette/hello
-//paletteRouter.post("/hello", async (req, res) => {})
+export default paletteRouter;
