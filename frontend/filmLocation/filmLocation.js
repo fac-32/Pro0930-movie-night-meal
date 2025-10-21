@@ -1,3 +1,7 @@
+import { applyStoredPalette } from "../colorPalette/colorPalette.js";
+
+applyStoredPalette();
+
 window.addEventListener("load", async function () {
   const film = localStorage.getItem("filmTitle");
   const pageTitle = document.getElementById("gameHeader");
