@@ -106,8 +106,8 @@ span {
 }
 
 .gameBtn {
-  background-color: #edeef0;
-  color: rgb(19, 19, 19);
+  background-color: var(--section-bg-color);
+  color: var(--text-color-accent);
   border: none;
   padding: 0.75rem 1.5rem;
   font-size: 1.1rem;
@@ -117,7 +117,7 @@ span {
   margin-bottom: 1.5rem;
 }
 .gameBtn:hover {
-  background-color: #cfcfcf;
+  background-color: var(--text-color);
 }
 
 #endGamePopup {
@@ -126,17 +126,17 @@ span {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--bg-color);
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
 .msgContent {
-  background: rgb(2, 17, 48);
+  background: var(--section-bg-color);
   text-align: center;
-  color: white;
-  border-bottom: #ffffff 2px solid;
+  color: var(--text-color);
+  border-bottom: var(--bg-color) 2px solid;
 }
 
 .msgContent img {
@@ -207,7 +207,7 @@ span {
   width: 3rem;
   height: 3rem;
   font-size: 1.25rem;
-  border-bottom: 3px solid #9ba7eb;
+  border-bottom: 3px solid var(--bg-color);
   border-radius: 6px 6px 0 0;
   user-select: none;
 }
@@ -220,7 +220,7 @@ span {
   width: 100%;
   max-width: 450px;
   padding: 0.5rem 0.25rem;
-  background-color: #051952;
+  background-color: var(--bg-color);
   border-radius: 8px;
 }
 
@@ -228,8 +228,8 @@ span {
   flex: 1 1 3.6rem;
   max-width: 3.8rem;
   height: 3.6rem;
-  background: #2a74d4;
-  color: white;
+  background: var(--section-bg-color);
+  color: var(--text-color);
   font-size: 1.2rem;
   border: none;
   border-radius: 6px;
@@ -241,7 +241,7 @@ span {
   user-select: none;
 }
 .keys:hover:not(.disable) {
-  background-color: #205dad;
+  background-color: var(--text-color-accent);
 }
 .keys.disable {
   pointer-events: none;
