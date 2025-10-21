@@ -35,7 +35,7 @@ const normalizeHsl = ({ h, s, l }) => ({
 
 const toCssHsl = ({ h, s, l }) =>
   `hsl(${Math.round(Number(h))}, ${Math.round(Number(s))}%, ${Math.round(
-    Number(l),
+    Number(l)
   )}%)`;
 
 const adjustBgColor = (color) => {
@@ -80,6 +80,9 @@ const CSS_VARIABLE_KEYS = ["--bg-color", "--text-color"];
 
 export async function getColorsForMovie(movieTitle, sampledPixels, apiKey) {
   if (!apiKey) throw new Error("Missing OPENAI_API_KEY");
+
+  //if need to clear cache - use this line below and import on the top
+  //clearColorPaletteCache();
 
   // validation of exist palette or new one
   const cacheKey =
@@ -141,20 +144,20 @@ ${JSON.stringify(sampledPixels)}
         }
         return formatHslKey(h, s, l);
       })
-      .filter(Boolean),
+      .filter(Boolean)
   );
 
-  const invalidColors = parsedPalette.filter(
-    (color) => !validColorSet.has(formatHslKey(color.h, color.s, color.l)),
-  );
+  // const invalidColors = parsedPalette.filter(
+  //   (color) => !validColorSet.has(formatHslKey(color.h, color.s, color.l))
+  // );
 
-  if (invalidColors.length > 0) {
-    console.error(
-      "OpenAI palette contains colors outside the input samples:",
-      invalidColors,
-    );
-    throw new Error("Received colors not present in input samples.");
-  }
+  // if (invalidColors.length > 0) {
+  //   console.error(
+  //     "OpenAI palette contains colors outside the input samples:",
+  //     invalidColors
+  //   );
+  //   throw new Error("Received colors not present in input samples.");
+  // }
 
   const resolvedColors = CSS_VARIABLE_KEYS.reduce((acc, key, index) => {
     const hslColor = parsedPalette[index];
@@ -192,10 +195,11 @@ ${JSON.stringify(sampledPixels)}
 
   //create new value in object to cachcing palette for furher req
   const result = { palette };
+
   if (cacheKey) {
     cachingPalette[cacheKey] = { palette: { ...palette } };
     //console.log(`create new palette for ${cacheKey}`);
   }
-  //clearColorPaletteCache();
+
   return result;
 }
